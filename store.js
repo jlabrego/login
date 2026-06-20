@@ -49,14 +49,18 @@ if (accessDeniedPanel) accessDeniedPanel.style.display = 'none';
     if (storeWrapper) storeWrapper.style.display = 'block';
     if (accessDeniedPanel) accessDeniedPanel.style.display = 'none';
 
+    if (activeUser) {
     initializeUserUI(activeUser);
+}
 
     function initializeUserUI(user) {
-        // Inicializar iniciales (avatar)
-        const avatarText = document.getElementById('avatarText');
-        const userNameLabel = document.getElementById('userNameLabel');
-        const dropdownName = document.getElementById('dropdownName');
-        const dropdownEmail = document.getElementById('dropdownEmail');
+
+    if (!user) return;
+
+    const avatarText = document.getElementById('avatarText');
+    const userNameLabel = document.getElementById('userNameLabel');
+    const dropdownName = document.getElementById('dropdownName');
+    const dropdownEmail = document.getElementById('dropdownEmail');
 
         if (avatarText) {
             const initials = user.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
@@ -107,13 +111,13 @@ if (accessDeniedPanel) accessDeniedPanel.style.display = 'none';
     // 3. PRODUCTOS DEL CATÁLOGO (EXPANDIDO POR CATEGORÍAS)
     // ==========================================================================
     const CATEGORIES = [
-        { id: 'todos', name: 'Todos', icon: '✦' },
-        { id: 'cuidado-facial', name: 'Cuidado Facial', icon: '🌸' },
-        { id: 'maquillaje', name: 'Maquillaje', icon: '💄' },
-        { id: 'fragancias', name: 'Fragancias', icon: '🌿' },
-        { id: 'cuidado-corporal', name: 'Cuidado Corporal', icon: '🧴' },
-        { id: 'cabello', name: 'Cabello', icon: '✨' },
-        { id: 'sets-regalos', name: 'Sets & Regalos', icon: '🎁' }
+        { id: 'todos', name: 'Todos', icon: '' },
+        { id: 'cuidado-facial', name: 'Cuidado Facial', icon: '' },
+        { id: 'maquillaje', name: 'Maquillaje', icon: '' },
+        { id: 'fragancias', name: 'Fragancias', icon: '' },
+        { id: 'cuidado-corporal', name: 'Cuidado Corporal', icon: '' },
+        { id: 'cabello', name: 'Cabello', icon: '' },
+        { id: 'sets-regalos', name: 'Sets & Regalos', icon: '' }
     ];
 
     const PRODUCTS = [
