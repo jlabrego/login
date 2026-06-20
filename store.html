@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boutique - Aura Beauté</title>
+    <!-- Google Fonts: Playfair Display (Luxury Serif) & Outfit (Modern Sans) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Hojas de estilo -->
+    <link rel="stylesheet" href="styles.css"> <!-- Para reutilizar variables y estilos base -->
+    <link rel="stylesheet" href="store.css">
+</head>
+<body>
+    <!-- Elementos decorativos de fondo en movimiento -->
+    <div class="background-decorations">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+
+    <!-- PANEL DE ACCESO DENEGADO (SOPORTE DE SEGURIDAD ROBUSTA) -->
+    <div class="access-denied-overlay" id="accessDeniedPanel" style="display: none;">
+        <div class="access-denied-card">
+            <div class="logo-area">
+                <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M12 22C12 22 17 18 17 13C17 10.2386 14.7614 8 12 8C9.23858 8 7 10.2386 7 13C7 18 12 22 12 22Z"/>
+                    <path d="M12 8C12 8 15 5 15 3C15 1.89543 14.1046 1 13 1C11.8954 1 11 1.89543 11 3C11 5 12 8 12 8Z"/>
+                    <circle cx="12" cy="13" r="1" fill="currentColor"/>
+                </svg>
+                <span class="logo-text">Aura Beauté</span>
+            </div>
+            <h2>Acceso Protegido</h2>
+            <p>Es necesario iniciar sesión en tu tocador para poder explorar nuestra boutique botánica de lujo.</p>
+            <a href="login.html" class="submit-btn login-redirect-btn">Iniciar Sesión</a>
+        </div>
+    </div>
+
+    <!-- CONTENEDOR DE LA TIENDA (SE MUESTRA SOLO SI HAY SESIÓN ACTIVA) -->
+    <div id="storeWrapper" style="display: none; width: 100%;">
+        <!-- Barra de Navegación Premium -->
+        <header class="store-header">
+        <div class="nav-container">
+            <div class="logo-area">
+                <!-- Isotipo de flor botánica -->
+                <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 22C12 22 17 18 17 13C17 10.2386 14.7614 8 12 8C9.23858 8 7 10.2386 7 13C7 18 12 22 12 22Z"/>
+                    <path d="M12 8C12 8 15 5 15 3C15 1.89543 14.1046 1 13 1C11.8954 1 11 1.89543 11 3C11 5 12 8 12 8Z"/>
+                    <path d="M7 13C7 13 4 11 3 9C2.10457 8.20914 2.10457 6.79086 3 6C3.89543 5.20914 5.30457 5.20914 6.2 6C8 7.8 7 13 7 13Z"/>
+                    <path d="M17 13C17 13 20 11 21 9C21.8954 8.20914 21.8954 6.79086 21 6C20.1046 5.20914 18.6954 5.20914 17.8 6C16 7.8 17 13 17 13Z"/>
+                    <circle cx="12" cy="13" r="1" fill="currentColor"/>
+                </svg>
+                <span class="logo-text">Aura Beauté</span>
+            </div>
+
+            <!-- Navegación central (Desktop) -->
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="#" class="active">Inicio</a></li>
+                    <li><a href="#catalog">Catálogo</a></li>
+                    <li><a href="#collections">Colecciones</a></li>
+                    <li><a href="#skincare">Skincare</a></li>
+                    <li><a href="#novedades">Novedades</a></li>
+                    <li><a href="#testimonios">Reseñas</a></li>
+                    <li><a href="#contacto">Contacto</a></li>
+                </ul>
+            </nav>
+
+            <!-- Acciones e interactividad -->
+            <div class="header-actions">
+                <!-- Perfil de usuario -->
+                <div class="user-profile" id="userProfileMenu">
+                    <button class="profile-trigger" id="profileTrigger">
+                        <span class="user-avatar-text" id="avatarText">JA</span>
+                        <span class="user-name-label" id="userNameLabel">Jessica Abrego</span>
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </button>
+                    <!-- Menú desplegable -->
+                    <div class="profile-dropdown" id="profileDropdown">
+                        <div class="dropdown-header">
+                            <h4 id="dropdownName">Jessica Abrego</h4>
+                            <p id="dropdownEmail">jessica@aurabeaute.com</p>
+                        </div>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item">
+                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                            Mi Tocador
+                        </a>
+                        <a href="#" class="dropdown-item" id="logoutBtn">
+                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                                <polyline points="16 17 21 12 16 7"></polyline>
+                                <line x1="21" y1="12" x2="9" y2="12"></line>
+                            </svg>
+                            Cerrar Sesión
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Carrito de Compras -->
+                <button class="cart-trigger-btn" id="cartTrigger" aria-label="Abrir carrito de compras">
+                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="9" cy="21" r="1"></circle>
+                        <circle cx="20" cy="21" r="1"></circle>
+                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                    </svg>
+                    <span class="cart-counter" id="cartCounter">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Contenido Principal -->
+    <main class="store-content">
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="hero-container">
+                <div class="hero-text">
+                    <span class="hero-tag">Edición Botánica de Lujo</span>
+                    <h1>El Arte de la Belleza Orgánica</h1>
+                    <p class="hero-subtitle">Descubre fórmulas puras y extractos botánicos diseñados para iluminar tu piel desde el interior. Alta cosmética respetuosa con tu naturaleza.</p>
+                    <div class="hero-buttons">
+                        <a href="#catalog" class="submit-btn hero-cta-btn">Explorar la Colección</a>
+                    </div>
+                </div>
+                <div class="hero-image-wrap">
+                    <div class="hero-image-backdrop"></div>
+                    <img src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?q=80&w=1000&auto=format&fit=crop" alt="Colección de cosméticos naturales Aura Beauté" class="hero-img">
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección de Categorías -->
+        <section class="categories-section" id="collections">
+            <div class="section-title">
+                <h2>Nuestras Líneas</h2>
+                <p>Curaduría especializada de ingredientes orgánicos selectos</p>
+            </div>
+            <div class="categories-grid">
+                <div class="category-card">
+                    <div class="cat-img-wrap">
+                        <img src="https://images.unsplash.com/photo-1601049541289-9b1b7bbbfe19?q=80&w=400&auto=format&fit=crop" alt="Skincare">
+                    </div>
+                    <div class="category-info">
+                        <h3>Cuidado Facial</h3>
+                        <p>Tratamientos y sueros regeneradores</p>
+                    </div>
+                </div>
+                <div class="category-card">
+                    <div class="cat-img-wrap">
+                        <img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?q=80&w=400&auto=format&fit=crop" alt="Makeup">
+                    </div>
+                    <div class="category-info">
+                        <h3>Maquillaje de Autor</h3>
+                        <p>Tonos naturales y texturas satinadas</p>
+                    </div>
+                </div>
+                <div class="category-card">
+                    <div class="cat-img-wrap">
+                        <img src="https://images.unsplash.com/photo-1617897903246-719242758050?q=80&w=400&auto=format&fit=crop" alt="Fragrance">
+                    </div>
+                    <div class="category-info">
+                        <h3>Fragancias</h3>
+                        <p>Esencias florales y extractos de bosque</p>
+                    </div>
+                </div>
+                <div class="category-card">
+                    <div class="cat-img-wrap">
+                        <img src="https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?q=80&w=400&auto=format&fit=crop" alt="Body Care">
+                    </div>
+                    <div class="category-info">
+                        <h3>Cuidado Corporal</h3>
+                        <p>Hidratación profunda y bienestar</p>
+                    </div>
+                </div>
+                <div class="category-card">
+                    <div class="cat-img-wrap">
+                        <img src="https://images.unsplash.com/photo-1526947425960-945c6e72858f?q=80&w=400&auto=format&fit=crop" alt="Hair Care">
+                    </div>
+                    <div class="category-info">
+                        <h3>Cabello</h3>
+                        <p>Brillo, nutrición y vitalidad</p>
+                    </div>
+                </div>
+                <div class="category-card">
+                    <div class="cat-img-wrap">
+                        <img src="https://images.unsplash.com/photo-1612817288484-6f916006741a?q=80&w=400&auto=format&fit=crop" alt="Gift Sets">
+                    </div>
+                    <div class="category-info">
+                        <h3>Sets & Regalos</h3>
+                        <p>Cofres exclusivos para obsequiar</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Skincare Highlight Banner -->
+        <section class="promo-banner" id="skincare">
+            <div class="promo-content">
+                <span class="promo-tag">✦ Rutina Skincare</span>
+                <h2>Tu Ritual de Belleza Diario</h2>
+                <p>Descubre el orden perfecto para aplicar tus productos y maximizar sus beneficios. Desde la limpieza hasta la protección solar.</p>
+                <div class="promo-steps">
+                    <div class="promo-step">
+                        <span class="step-num">01</span>
+                        <span class="step-label">Limpieza</span>
+                    </div>
+                    <div class="promo-step">
+                        <span class="step-num">02</span>
+                        <span class="step-label">Tónico</span>
+                    </div>
+                    <div class="promo-step">
+                        <span class="step-num">03</span>
+                        <span class="step-label">Sérum</span>
+                    </div>
+                    <div class="promo-step">
+                        <span class="step-num">04</span>
+                        <span class="step-label">Hidratación</span>
+                    </div>
+                    <div class="promo-step">
+                        <span class="step-num">05</span>
+                        <span class="step-label">Protección</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Catálogo de Productos -->
+        <section class="catalog-section" id="catalog">
+            <div class="section-title">
+                <h2>El Tocador Recomendado</h2>
+                <p>Nuestra selección exclusiva para tu rutina diaria de bienestar</p>
+            </div>
+            <!-- Filtros de categoría -->
+            <div class="category-filters" id="categoryFilters">
+                <!-- Generado por JS -->
+            </div>
+            <div class="products-grid" id="productsGrid">
+                <!-- Productos insertados por Javascript -->
+            </div>
+        </section>
+
+        <!-- Novedades / Banner de Envío -->
+        <section class="trust-section" id="novedades">
+            <div class="trust-grid">
+                <div class="trust-card">
+                    <div class="trust-icon">🌱</div>
+                    <h4>100% Orgánico</h4>
+                    <p>Ingredientes naturales certificados</p>
+                </div>
+                <div class="trust-card">
+                    <div class="trust-icon">🐰</div>
+                    <h4>Cruelty Free</h4>
+                    <p>Sin pruebas en animales</p>
+                </div>
+                <div class="trust-card">
+                    <div class="trust-icon">🚚</div>
+                    <h4>Envío Gratis</h4>
+                    <p>En pedidos mayores a $50</p>
+                </div>
+                <div class="trust-card">
+                    <div class="trust-icon">♻️</div>
+                    <h4>Eco-Packaging</h4>
+                    <p>Empaques biodegradables</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonios / Reseñas -->
+        <section class="testimonials-section" id="testimonios">
+            <div class="section-title">
+                <h2>Lo Que Dicen Nuestras Clientas</h2>
+                <p>Experiencias reales de la comunidad Aura Beauté</p>
+            </div>
+            <div class="testimonials-slider">
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p class="testimonial-text">"La Crème de Fleur transformó mi piel en solo dos semanas. Nunca había sentido mi rostro tan suave e hidratado."</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">ML</div>
+                        <div>
+                            <h5>María López</h5>
+                            <span>Cliente desde 2024</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p class="testimonial-text">"Nuit Étoilée es mi fragancia favorita. Recibo cumplidos constantemente. El aroma dura todo el día."</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">SC</div>
+                        <div>
+                            <h5>Sofía Castillo</h5>
+                            <span>Cliente desde 2023</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p class="testimonial-text">"El Coffret Essentiel fue el regalo perfecto para mi mamá. La presentación es increíblemente elegante."</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">AR</div>
+                        <div>
+                            <h5>Andrea Ríos</h5>
+                            <span>Cliente desde 2025</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p class="testimonial-text">"El Coffret Essentiel fue el regalo perfecto para mi mamá. La presentación es increíblemente elegante."</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">AR</div>
+                        <div>
+                            <h5>Andrea Ríos</h5>
+                            <span>Cliente desde 2025</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p class="testimonial-text">"El Coffret Essentiel fue el regalo perfecto para mi mamá. La presentación es increíblemente elegante."</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">AR</div>
+                        <div>
+                            <h5>Andrea Ríos</h5>
+                            <span>Cliente desde 2025</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p class="testimonial-text">"El Coffret Essentiel fue el regalo perfecto para mi mamá. La presentación es increíblemente elegante."</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">AR</div>
+                        <div>
+                            <h5>Andrea Ríos</h5>
+                            <span>Cliente desde 2025</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+    <div class="testimonial-stars">★★★★★</div>
+    <p class="testimonial-text">
+        "Los productos llegaron rápido y el empaque es hermoso.
+        Definitivamente volveré a comprar."
+    </p>
+    <div class="testimonial-author">
+        <div class="author-avatar">CR</div>
+        <div>
+            <h5>Carla Ramírez</h5>
+            <span>Cliente desde 2025</span>
+        </div>
+    </div>
+</div>
+
+<div class="testimonial-card">
+    <div class="testimonial-stars">★★★★★</div>
+    <p class="testimonial-text">
+        "La calidad supera mis expectativas. Mi piel luce mucho más luminosa."
+    </p>
+    <div class="testimonial-author">
+        <div class="author-avatar">LV</div>
+        <div>
+            <h5>Laura Vargas</h5>
+            <span>Cliente desde 2024</span>
+        </div>
+    </div>
+</div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer de la Tienda -->
+    <footer class="store-footer" id="contacto">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <div class="logo-area">
+                    <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M12 22C12 22 17 18 17 13C17 10.2386 14.7614 8 12 8C9.23858 8 7 10.2386 7 13C7 18 12 22 12 22Z"/>
+                        <path d="M12 8C12 8 15 5 15 3C15 1.89543 14.1046 1 13 1C11.8954 1 11 1.89543 11 3C11 5 12 8 12 8Z"/>
+                        <circle cx="12" cy="13" r="1" fill="currentColor"/>
+                    </svg>
+                    <span class="logo-text">Aura Beauté</span>
+                </div>
+                <p>Fórmulas botánicas sofisticadas creadas para el cuidado diario de tu piel y tu bienestar físico.</p>
+            </div>
+            <div class="footer-links">
+                <h4>Tienda</h4>
+                <ul>
+                    <li><a href="#catalog">Catálogo Completo</a></li>
+                    <li><a href="#collections">Colecciones</a></li>
+                    <li><a href="#skincare">Rutina Skincare</a></li>
+                    <li><a href="#novedades">Novedades</a></li>
+                    <li><a href="#testimonios">Reseñas</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Información</h4>
+                <ul>
+                    <li><a href="#">Sobre Nosotros</a></li>
+                    <li><a href="#">Sostenibilidad</a></li>
+                    <li><a href="#">Envíos y Entregas</a></li>
+                    <li><a href="#">Política de Devoluciones</a></li>
+                    <li><a href="#">Preguntas Frecuentes</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Síguenos</h4>
+                <ul>
+                    <li><a href="#">Instagram</a></li>
+                    <li><a href="#">Pinterest</a></li>
+                    <li><a href="#">TikTok</a></li>
+                    <li><a href="#">YouTube</a></li>
+                </ul>
+            </div>
+            <div class="footer-newsletter">
+                <h4>Suscríbete</h4>
+                <p>Recibe ofertas especiales de la colección botánica.</p>
+                <form class="newsletter-form" id="newsletterForm" onsubmit="event.preventDefault();">
+                    <input type="email" placeholder="Tu correo electrónico" required>
+                    <button type="submit" class="submit-btn">Unirme</button>
+                </form>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Aura Beauté. Cuidado Consciente. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- Panel Lateral: Carrito de Compras (Slide-over) -->
+    <div class="cart-overlay" id="cartOverlay">
+        <div class="cart-panel">
+            <div class="cart-header">
+                <h3>Tu Carrito</h3>
+                <button class="cart-close-btn" id="cartCloseBtn" aria-label="Cerrar carrito">&times;</button>
+            </div>
+
+            <!-- Contenedor de items del carrito -->
+            <div class="cart-body">
+                <div class="cart-empty" id="cartEmpty">
+                    <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="9" cy="21" r="1"></circle>
+                        <circle cx="20" cy="21" r="1"></circle>
+                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                    </svg>
+                    <p>Tu carrito está vacío</p>
+                    <span>Agrega productos del catálogo para comenzar.</span>
+                </div>
+                <div class="cart-items-list" id="cartItemsList">
+                    <!-- Rellenado dinámicamente -->
+                </div>
+            </div>
+
+            <!-- Resumen y Checkout -->
+            <div class="cart-footer" id="cartFooter">
+                <div class="cart-summary">
+                    <div class="summary-row">
+                        <span>Subtotal:</span>
+                        <span class="subtotal-amount" id="cartSubtotal">$0.00</span>
+                    </div>
+                    <div class="summary-row shipping-row">
+                        <span>Envío:</span>
+                        <span>Gratis</span>
+                    </div>
+                </div>
+                <button class="submit-btn checkout-btn" id="checkoutBtn">
+                    <span class="btn-text">Finalizar Compra</span>
+                    <span class="btn-spinner"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- WIDGET DE BUZÓN DE SIMULACIÓN FLOTANTE (TEMA CLARO) -->
+    <div class="simulation-mailbox" id="simMailbox">
+        <button class="mailbox-trigger" id="mailboxTrigger" aria-label="Buzón de simulación de mensajes y correos">
+            <span class="mailbox-trigger-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                    <polyline points="22,6 12,13 2,6"></polyline>
+                </svg>
+            </span>
+            <span class="mailbox-badge" id="mailboxBadge">0</span>
+        </button>
+        <div class="mailbox-panel" id="mailboxPanel">
+            <div class="mailbox-header">
+                <div class="mailbox-header-title">
+                    <span>📬 Buzón de Simulación</span>
+                    <span class="mailbox-sub">Pruebas Aura Beauté</span>
+                </div>
+                <button class="mailbox-close" id="mailboxPanelClose" aria-label="Cerrar buzón">&times;</button>
+            </div>
+            
+            <!-- Vista de Lista de Mensajes -->
+            <div class="mailbox-view-container" id="mailboxListView">
+                <div class="mailbox-empty" id="mailboxEmptyWidget">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="8" y1="12" x2="16" y2="12"></line>
+                    </svg>
+                    <p>No hay correos ni mensajes nuevos</p>
+                    <span>Envía una simulación en la página para interactuar.</span>
+                </div>
+                <div class="mailbox-list" id="mailboxList"></div>
+            </div>
+
+            <!-- Vista de Detalle de Mensaje -->
+            <div class="mailbox-view-container mailbox-view-container--hidden" id="mailboxDetailView">
+                <button class="mailbox-back-btn" id="mailboxDetailBack">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="15 18 9 12 15 6"></polyline>
+                    </svg>
+                    Volver a la lista
+                </button>
+                <div class="mailbox-message-content" id="mailboxMessageContent">
+                    <!-- Rellenado dinámicamente por JS -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+        <!-- Contenedor de notificaciones Toast -->
+        <div class="toast-container" id="toastContainer"></div>
+    </div> <!-- Fin de storeWrapper -->
+
+    <script src="store.js"></script>
+</body>
+</html>

@@ -3,44 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Acceso al Sistema - Premium Portal</title>
-    <!-- Google Fonts: Outfit -->
+    <title>Tocador Digital - Aura Beauté</title>
+    <!-- Google Fonts: Playfair Display (Luxury Serif) & Outfit (Modern Sans) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <!-- Hojas de estilo -->
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <!-- Elementos decorativos de fondo en movimiento -->
+    <!-- Elementos decorativos de fondo en movimiento (tonos pastel y cálidos) -->
     <div class="background-decorations">
         <div class="orb orb-1"></div>
         <div class="orb orb-2"></div>
         <div class="orb orb-3"></div>
     </div>
+
     <!-- Contenedor principal centrado -->
     <main class="auth-container" id="authContainer">
-        <!-- Tarjeta principal con efecto Glassmorphism -->
+        <!-- Tarjeta principal con efecto Glassmorphism Claro -->
         <div class="auth-card">
             <!-- Encabezado de la tarjeta -->
             <div class="auth-header">
                 <div class="logo-area">
-                    <svg class="logo-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <!-- Isotipo de flor minimalista/botánica en SVG -->
+                    <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 22C12 22 17 18 17 13C17 10.2386 14.7614 8 12 8C9.23858 8 7 10.2386 7 13C7 18 12 22 12 22Z"/>
+                        <path d="M12 8C12 8 15 5 15 3C15 1.89543 14.1046 1 13 1C11.8954 1 11 1.89543 11 3C11 5 12 8 12 8Z"/>
+                        <path d="M7 13C7 13 4 11 3 9C2.10457 8.20914 2.10457 6.79086 3 6C3.89543 5.20914 5.30457 5.20914 6.2 6C8 7.8 7 13 7 13Z"/>
+                        <path d="M17 13C17 13 20 11 21 9C21.8954 8.20914 21.8954 6.79086 21 6C20.1046 5.20914 18.6954 5.20914 17.8 6C16 7.8 17 13 17 13Z"/>
+                        <circle cx="12" cy="13" r="1" fill="currentColor"/>
                     </svg>
-                    <span class="logo-text">Aetheria</span>
+                    <span class="logo-text">Aura Beauté</span>
                 </div>
                 <h2>Bienvenido</h2>
-                <p class="subtitle" id="authSubtitle">Inicia sesión para acceder a tu panel de control.</p>
+                <p class="subtitle" id="authSubtitle">Inicia sesión para acceder a tu tocador digital.</p>
             </div>
+
             <!-- Selector de pestañas deslizable -->
             <div class="tab-selector">
                 <div class="tab-slider"></div>
                 <button type="button" class="tab-btn active" id="tabLogin" data-target="login">Iniciar Sesión</button>
                 <button type="button" class="tab-btn" id="tabRegister" data-target="register">Registrarse</button>
             </div>
+
             <!-- Contenedor con scroll horizontal oculto para los formularios -->
             <div class="forms-wrapper">
                 <div class="forms-slider" id="formsSlider">
@@ -53,6 +59,7 @@
                             <span class="input-line"></span>
                             <span class="error-msg">Por favor, introduce un correo válido.</span>
                         </div>
+
                         <!-- Grupo: Contraseña -->
                         <div class="input-group password-group">
                             <input type="password" id="loginPassword" required placeholder=" ">
@@ -66,6 +73,7 @@
                             </button>
                             <span class="error-msg">La contraseña no puede estar vacía.</span>
                         </div>
+
                         <!-- Opciones adicionales -->
                         <div class="form-options">
                             <label class="checkbox-container">
@@ -75,15 +83,18 @@
                             </label>
                             <a href="#" class="forgot-password-link" id="openForgotModal">¿Olvidaste tu contraseña?</a>
                         </div>
+
                         <!-- Botón de Envío -->
                         <button type="submit" class="submit-btn" id="loginSubmitBtn">
                             <span class="btn-text">Entrar</span>
                             <span class="btn-spinner"></span>
                         </button>
+
                         <!-- Divisor social -->
                         <div class="social-divider">
                             <span>O continuar con</span>
                         </div>
+
                         <!-- Redes Sociales -->
                         <div class="social-buttons">
                             <button type="button" class="social-btn google-btn" aria-label="Iniciar sesión con Google">
@@ -101,6 +112,7 @@
                             </button>
                         </div>
                     </form>
+
                     <!-- FORMULARIO DE REGISTRO -->
                     <form class="auth-form" id="registerForm" novalidate>
                         <!-- Grupo: Nombre Completo -->
@@ -110,6 +122,7 @@
                             <span class="input-line"></span>
                             <span class="error-msg">Por favor, introduce tu nombre (mínimo 3 letras).</span>
                         </div>
+
                         <!-- Grupo: Email -->
                         <div class="input-group">
                             <input type="email" id="registerEmail" required placeholder=" ">
@@ -117,6 +130,7 @@
                             <span class="input-line"></span>
                             <span class="error-msg">Por favor, introduce un correo válido.</span>
                         </div>
+
                         <!-- Grupo: Contraseña -->
                         <div class="input-group password-group">
                             <input type="password" id="registerPassword" required placeholder=" ">
@@ -130,6 +144,7 @@
                             </button>
                             <span class="error-msg">Mínimo 8 caracteres, al menos una letra y un número.</span>
                         </div>
+
                         <!-- Términos y condiciones -->
                         <div class="form-options">
                             <label class="checkbox-container">
@@ -138,15 +153,18 @@
                                 <span class="checkbox-label">Acepto los <a href="#" class="terms-link">Términos de servicio</a> y la <a href="#" class="terms-link">Privacidad</a></span>
                             </label>
                         </div>
+
                         <!-- Botón de Envío -->
                         <button type="submit" class="submit-btn" id="registerSubmitBtn">
                             <span class="btn-text">Registrarme</span>
                             <span class="btn-spinner"></span>
                         </button>
+
                         <!-- Divisor social -->
                         <div class="social-divider">
                             <span>O registrarte con</span>
                         </div>
+
                         <!-- Redes Sociales -->
                         <div class="social-buttons">
                             <button type="button" class="social-btn google-btn" aria-label="Registrarse con Google">
@@ -168,6 +186,7 @@
             </div>
         </div>
     </main>
+
     <!-- Modal: Recuperar Contraseña -->
     <div class="modal-overlay" id="forgotModal" role="dialog" aria-modal="true" aria-labelledby="forgotModalTitle">
         <div class="modal-card">
@@ -177,6 +196,7 @@
                     <line x1="6" y1="6" x2="18" y2="18"></line>
                 </svg>
             </button>
+
             <!-- VISTA 1: Selección de método -->
             <div class="modal-view" id="forgotMethodView">
                 <div class="modal-icon">
@@ -185,8 +205,8 @@
                         <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
                     </svg>
                 </div>
-                <h3 id="forgotModalTitle">¿Olvidaste tu contraseña?</h3>
-                <p class="modal-subtitle">Elige cómo quieres recibir las instrucciones para restablecerla o recuperar tu usuario.</p>
+                <h3 id="forgotModalTitle">¿Olvidaste tus accesos?</h3>
+                <p class="modal-subtitle">Elige cómo quieres recibir las instrucciones para restablecer tu contraseña o recuperar tu usuario de belleza.</p>
                 <div class="method-selector">
                     <button type="button" class="method-btn" id="methodEmail">
                         <div class="method-btn-icon">
@@ -219,6 +239,7 @@
                     </button>
                 </div>
             </div>
+
             <!-- VISTA 2A: Formulario por correo -->
             <div class="modal-view modal-view--hidden" id="forgotEmailView">
                 <button type="button" class="modal-back" id="backFromEmail" aria-label="Volver">
@@ -247,6 +268,7 @@
                         <span>Nombre de Usuario</span>
                     </label>
                 </div>
+
                 <form id="forgotEmailForm" novalidate>
                     <div class="input-group" id="forgotEmailGroup">
                         <input type="email" id="forgotEmail" required placeholder=" ">
@@ -260,6 +282,7 @@
                     </button>
                 </form>
             </div>
+
             <!-- VISTA 2B: Formulario por teléfono -->
             <div class="modal-view modal-view--hidden" id="forgotPhoneView">
                 <button type="button" class="modal-back" id="backFromPhone" aria-label="Volver">
@@ -275,6 +298,7 @@
                 </div>
                 <h3>Recuperar por SMS</h3>
                 <p class="modal-subtitle font-sm">Elige qué deseas recuperar y enviaremos un código por teléfono.</p>
+
                 <!-- Tipo de recuperación para teléfono -->
                 <div class="recovery-type-select">
                     <label class="radio-chip">
@@ -286,6 +310,7 @@
                         <span>Nombre de Usuario</span>
                     </label>
                 </div>
+
                 <form id="forgotPhoneForm" novalidate>
                     <div class="input-group phone-input-group" id="forgotPhoneGroup">
                         <div class="phone-field">
@@ -318,6 +343,7 @@
                     </button>
                 </form>
             </div>
+
             <!-- VISTA 3: Confirmación por correo -->
             <div class="modal-view modal-view--hidden" id="forgotEmailSuccessView">
                 <div class="modal-icon modal-icon--success">
@@ -326,11 +352,12 @@
                         <polyline points="22,6 12,13 2,6"></polyline>
                     </svg>
                 </div>
-                <h3>¡Correo enviado!</h3>
+                <h3>¡Enlace enviado!</h3>
                 <p class="modal-subtitle">Revisa tu bandeja de entrada simulada para continuar.</p>
-                <p class="modal-hint">Abre el <strong>📬 Buzón de Simulación</strong> en la esquina inferior para ver el correo.</p>
+                <p class="modal-hint">Abre el <strong>📬 Buzón de Simulación</strong> en la esquina inferior para ver las instrucciones.</p>
                 <button type="button" class="submit-btn" id="forgotEmailDoneBtn">Entendido</button>
             </div>
+
             <!-- VISTA 4: Confirmación por SMS (Ingresar Código) -->
             <div class="modal-view modal-view--hidden" id="forgotPhoneVerifyView">
                 <button type="button" class="modal-back" id="backFromPhoneVerify" aria-label="Volver">
@@ -360,6 +387,7 @@
                     </button>
                 </form>
             </div>
+
             <!-- VISTA 4A (Inactiva): Confirmación por SMS básica -->
             <div class="modal-view modal-view--hidden" id="forgotPhoneSuccessView">
                 <div class="modal-icon modal-icon--success">
@@ -371,6 +399,7 @@
                 <p class="modal-subtitle">Enviamos un código de 6 dígitos a <strong id="forgotPhoneSent"></strong>. Revisa el buzón de simulación.</p>
                 <button type="button" class="submit-btn" id="forgotPhoneDoneBtn">Entendido</button>
             </div>
+
             <!-- VISTA 5: Restablecer Contraseña -->
             <div class="modal-view modal-view--hidden" id="forgotResetPasswordView">
                 <div class="modal-icon">
@@ -379,7 +408,7 @@
                     </svg>
                 </div>
                 <h3>Restablecer contraseña</h3>
-                <p class="modal-subtitle">Establece tu nueva contraseña de acceso.</p>
+                <p class="modal-subtitle">Establece tu nueva contraseña de acceso al tocador.</p>
                 <form id="forgotResetForm" novalidate>
                     <!-- Campo: Nueva Contraseña -->
                     <div class="input-group password-group" id="resetPasswordGroup">
@@ -394,6 +423,7 @@
                         </button>
                         <span class="error-msg">Mínimo 8 caracteres, al menos una letra y un número.</span>
                     </div>
+
                     <!-- Campo: Confirmar Contraseña -->
                     <div class="input-group password-group" id="resetConfirmGroup">
                         <input type="password" id="resetConfirmPassword" required placeholder=" ">
@@ -407,6 +437,7 @@
                         </button>
                         <span class="error-msg">Las contraseñas no coinciden.</span>
                     </div>
+
                     <button type="submit" class="submit-btn" id="forgotResetSubmitBtn">
                         <span class="btn-text">Restablecer contraseña</span>
                         <span class="btn-spinner"></span>
@@ -415,7 +446,8 @@
             </div>
         </div>
     </div>
-    <!-- WIDGET DE BUZÓN DE SIMULACIÓN FLOTANTE -->
+
+    <!-- WIDGET DE BUZÓN DE SIMULACIÓN FLOTANTE (TEMA CLARO) -->
     <div class="simulation-mailbox" id="simMailbox">
         <button class="mailbox-trigger" id="mailboxTrigger" aria-label="Buzón de simulación de mensajes y correos">
             <span class="mailbox-trigger-icon">
@@ -430,7 +462,7 @@
             <div class="mailbox-header">
                 <div class="mailbox-header-title">
                     <span>📬 Buzón de Simulación</span>
-                    <span class="mailbox-sub">Pruebas en tiempo real</span>
+                    <span class="mailbox-sub">Pruebas Aura Beauté</span>
                 </div>
                 <button class="mailbox-close" id="mailboxPanelClose" aria-label="Cerrar buzón">&times;</button>
             </div>
@@ -447,6 +479,7 @@
                 </div>
                 <div class="mailbox-list" id="mailboxList"></div>
             </div>
+
             <!-- Vista de Detalle de Mensaje -->
             <div class="mailbox-view-container mailbox-view-container--hidden" id="mailboxDetailView">
                 <button class="mailbox-back-btn" id="mailboxDetailBack">
@@ -461,8 +494,10 @@
             </div>
         </div>
     </div>
+
     <!-- Contenedor de notificaciones Toast -->
     <div class="toast-container" id="toastContainer"></div>
+
     <script src="app.js"></script>
 </body>
 </html>
