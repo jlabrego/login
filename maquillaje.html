@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maquillaje | Aura Beauté</title>
+
+<link rel="stylesheet" href="store.css">
+
+<style>
+.category-hero{
+    padding:120px 20px 80px;
+    text-align:center;
+    background:linear-gradient(
+        rgba(0,0,0,.35),
+        rgba(0,0,0,.35)
+    ),
+    url('https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?q=80&w=1600');
+    background-size:cover;
+    background-position:center;
+    color:white;
+}
+
+.category-hero h1{
+    font-size:4rem;
+    margin-bottom:15px;
+}
+
+.category-hero p{
+    max-width:700px;
+    margin:auto;
+}
+
+.category-page{
+    max-width:1400px;
+    margin:auto;
+    padding:80px 30px;
+}
+
+.catalog-toolbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:40px;
+    flex-wrap:wrap;
+    gap:20px;
+}
+
+.toolbar-box{
+    display:flex;
+    gap:12px;
+    align-items:center;
+}
+
+.toolbar-box select{
+    padding:12px;
+    border-radius:12px;
+    border:1px solid #ddd;
+}
+
+.products-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:30px;
+}
+
+.product-card{
+    background:white;
+    border-radius:24px;
+    overflow:hidden;
+    box-shadow:0 10px 30px rgba(0,0,0,.05);
+}
+
+.product-card img{
+    width:100%;
+    height:280px;
+    object-fit:cover;
+}
+
+.product-info{
+    padding:20px;
+}
+
+.product-info h3{
+    margin-bottom:10px;
+}
+
+.price{
+    color:#b37e81;
+    font-weight:bold;
+    font-size:1.2rem;
+}
+
+.buy-btn{
+    margin-top:15px;
+    width:100%;
+    border:none;
+    background:#c59b9d;
+    color:white;
+    padding:12px;
+    border-radius:12px;
+    cursor:pointer;
+}
+
+.buy-btn:hover{
+    background:#b37e81;
+}
+.back-nav{
+    max-width:1400px;
+    margin:30px auto 0;
+    padding:0 30px;
+}
+
+.back-nav a{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    text-decoration:none;
+    color:#7a5d5f;
+    font-weight:600;
+    transition:.3s;
+}
+
+.back-nav a:hover{
+    transform:translateX(-4px);
+}
+</style>
+
+</head>
+<body>
+ <div class="back-nav">
+    <a href="store.html">
+        ← Volver a la tienda
+    </a>
+</div>
+<section class="category-hero">
+    <h1>Maquillaje de Autor</h1>
+    <p>
+        Descubre nuestra colección de maquillaje premium:
+        labiales, bases, paletas, iluminadores y mucho más.
+    </p>
+</section>
+
+<section class="category-page">
+
+    <div class="catalog-toolbar">
+
+        <div>
+            <h2>Maquillaje</h2>
+            <p>28 productos</p>
+        </div>
+
+        <div class="toolbar-box">
+            <span>Ordenar por:</span>
+
+            <select>
+                <option>Destacados</option>
+                <option>Precio menor a mayor</option>
+                <option>Precio mayor a menor</option>
+                <option>Más vendidos</option>
+            </select>
+        </div>
+
+    </div>
+
+    <div class="products-grid">
+
+        <div class="product-card">
+            <img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?q=80&w=600">
+            <div class="product-info">
+                <h3>Rose Velour</h3>
+                <div class="price">$32</div>
+                <button class="buy-btn">Agregar al carrito</button>
+            </div>
+        </div>
+
+        <div class="product-card">
+            <img src="https://images.unsplash.com/photo-1583241800698-e8ab01b85405?q=80&w=600">
+            <div class="product-info">
+                <h3>Palette Aurore</h3>
+                <div class="price">$58</div>
+                <button class="buy-btn">Agregar al carrito</button>
+            </div>
+        </div>
+
+        <div class="product-card">
+            <img src="https://images.unsplash.com/photo-1631214540553-a5e085dff4e4?q=80&w=600">
+            <div class="product-info">
+                <h3>Fond de Teint Lumière</h3>
+                <div class="price">$44</div>
+                <button class="buy-btn">Agregar al carrito</button>
+            </div>
+        </div>
+
+        <div class="product-card">
+            <img src="https://images.unsplash.com/photo-1512207736890-6ffed8a84e8d?q=80&w=600">
+            <div class="product-info">
+                <h3>Mascara Noir Infini</h3>
+                <div class="price">$28</div>
+                <button class="buy-btn">Agregar al carrito</button>
+            </div>
+        </div>
+
+        <div class="product-card">
+            <img src="https://images.unsplash.com/photo-1625093742435-6fa192b6fb10?q=80&w=600">
+            <div class="product-info">
+                <h3>Rouge Élégance</h3>
+                <div class="price">$30</div>
+                <button class="buy-btn">Agregar al carrito</button>
+            </div>
+        </div>
+
+        <div class="product-card">
+            <img src="https://images.unsplash.com/photo-1583001931096-959e9a1a6223?q=80&w=600">
+            <div class="product-info">
+                <h3>Velvet Kiss</h3>
+                <div class="price">$29</div>
+                <button class="buy-btn">Agregar al carrito</button>
+            </div>
+        </div>
+
+        <div class="product-card">
+            <img src="https://images.unsplash.com/photo-1612817288484-6f916006741a?q=80&w=600">
+            <div class="product-info">
+                <h3>Blush Rose Garden</h3>
+                <div class="price">$24</div>
+                <button class="buy-btn">Agregar al carrito</button>
+            </div>
+        </div>
+
+        <div class="product-card">
+            <img src="https://images.unsplash.com/photo-1607602132700-068258fa8b7d?q=80&w=600">
+            <div class="product-info">
+                <h3>Lumière Dorée</h3>
+                <div class="price">$26</div>
+                <button class="buy-btn">Agregar al carrito</button>
+            </div>
+        </div>
+
+        <div class="product-card">
+            <img src="https://images.unsplash.com/photo-1522338242992-e1a54571a9f7?q=80&w=600">
+            <div class="product-info">
+                <h3>Palette Rosée</h3>
+                <div class="price">$52</div>
+                <button class="buy-btn">Agregar al carrito</button>
+            </div>
+        </div>
+
+        <div class="product-card">
+            <img src="https://images.unsplash.com/photo-1590156117763-d0b5f6e96f2c?q=80&w=600">
+            <div class="product-info">
+                <h3>Crystal Glow</h3>
+                <div class="price">$22</div>
+                <button class="buy-btn">Agregar al carrito</button>
+            </div>
+        </div>
+
+        <div class="product-card">
+            <img src="https://images.unsplash.com/photo-1585386959984-a41552231658?q=80&w=600">
+            <div class="product-info">
+                <h3>Nude Satin</h3>
+                <div class="price">$27</div>
+                <button class="buy-btn">Agregar al carrito</button>
+            </div>
+        </div>
+
+        <div class="product-card">
+            <img src="https://images.unsplash.com/photo-1600180758890-6b94519a8ba6?q=80&w=600">
+            <div class="product-info">
+                <h3>Palette Nuit</h3>
+                <div class="price">$60</div>
+                <button class="buy-btn">Agregar al carrito</button>
+            </div>
+        </div>
+
+    </div>
+
+</section>
+
+</body>
+</html>
