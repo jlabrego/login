@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cabello | Aura Beauté</title>
+
+<link rel="stylesheet" href="store.css">
+
+<style>
+.category-hero{
+   padding:90px 20px;
+    text-align:center;
+    background:linear-gradient(
+        rgba(0,0,0,.35),
+        rgba(0,0,0,.35)
+    ),
+    url('https://plus.unsplash.com/premium_photo-1752235895775-79106f690342?q=80&w=1324&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+    background-size:cover;
+    background-position:center;
+    color:white;
+}
+
+.category-hero h1{
+    font-size:4rem;
+    margin-bottom:15px;
+}
+
+.category-hero p{
+    max-width:700px;
+    margin:auto;
+}
+
+.category-page{
+    max-width:1400px;
+    margin:auto;
+    padding:80px 30px;
+}
+
+.catalog-toolbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:40px;
+    flex-wrap:wrap;
+    gap:20px;
+}
+
+.toolbar-box{
+    display:flex;
+    gap:12px;
+    align-items:center;
+}
+
+.toolbar-box select{
+    padding:12px;
+    border-radius:12px;
+    border:1px solid #ddd;
+}
+
+.products-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:30px;
+}
+
+.product-card{
+    background:white;
+    border-radius:24px;
+    overflow:hidden;
+    box-shadow:0 10px 30px rgba(0,0,0,.05);
+}
+
+.product-card img{
+    width:100%;
+    height:280px;
+    object-fit:cover;
+}
+
+.product-info{
+    padding:20px;
+}
+
+.product-info h3{
+    margin-bottom:10px;
+}
+
+.price{
+    color:#b37e81;
+    font-weight:bold;
+    font-size:1.2rem;
+}
+
+.buy-btn{
+    margin-top:15px;
+    width:100%;
+    border:none;
+    background:#c59b9d;
+    color:white;
+    padding:12px;
+    border-radius:12px;
+    cursor:pointer;
+}
+
+.buy-btn:hover{
+    background:#b37e81;
+}
+.back-nav{
+    max-width:1400px;
+    margin:30px auto 0;
+    padding:0 30px;
+}
+
+.back-nav a{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    text-decoration:none;
+    color:#7a5d5f;
+    font-weight:600;
+    transition:.3s;
+}
+.category-hero{
+    position:relative;
+}
+.back-nav a:hover{
+    transform:translateX(-4px);
+}
+.breadcrumb{
+    max-width:1400px;
+    margin:30px auto;
+    padding:0 30px;
+    color:#8a7a7a;
+}
+
+.breadcrumb a{
+    color:#8a7a7a;
+    text-decoration:none;
+}
+.category-footer{
+    text-align:center;
+    padding:60px 20px;
+}
+
+.category-footer a{
+    color:#b37e81;
+    text-decoration:none;
+    font-weight:600;
+}
+</style>
+
+</head>
+<body>
+<section class="category-hero">
+
+<h1>Cuidado Capilar</h1>
+
+<p>
+Champús, mascarillas, aceites y tratamientos
+para fortalecer, nutrir y devolver el brillo natural a tu cabello.
+</p>
+</section>
+<div class="breadcrumb">
+    <a href="index.html">Inicio</a>
+    <span>/</span>
+    <a href="store.html">Tienda</a>
+    <span>/</span>
+    <strong>Cuidado Capilar</strong>
+</div>
+<section class="category-page">
+
+    <div class="catalog-toolbar">
+
+        <div>
+            <h2>Cuidado Capilar</h2>
+            <p>20 productos</p>
+        </div>
+
+        <div class="toolbar-box">
+            <span>Ordenar por:</span>
+
+            <select id="sortProducts">
+    <option value="featured">Destacados</option>
+    <option value="low">Precio menor a mayor</option>
+    <option value="high">Precio mayor a menor</option>
+    <option value="popular">Más vendidos</option>
+</select>
+        </div>
+
+    </div>
+
+    <div class="products-grid">
+
+       <div class="product-card">
+    <img src="https://images.unsplash.com/photo-1526947425960-945c6e72858f?auto=format&fit=crop&w=600&q=80">
+    <div class="product-info">
+        <h3>Shampooing Éclat</h3>
+        <div class="price">$24</div>
+        <button class="buy-btn">Agregar al carrito</button>
+    </div>
+</div>
+
+<div class="product-card">
+    <img src="https://images.unsplash.com/photo-1631729371254-42c2892f0e6e?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c2hhbXBvb3xlbnwwfDB8MHx8fDA%3D">
+    <div class="product-info">
+        <h3>Masque Capillaire Intense</h3>
+        <div class="price">$32</div>
+        <button class="buy-btn">Agregar al carrito</button>
+    </div>
+</div>
+
+<div class="product-card">
+    <img src="https://images.unsplash.com/photo-1527799820374-dcf8d9d4a388?auto=format&fit=crop&w=600&q=80">
+    <div class="product-info">
+        <h3>Huile Précieuse Cheveux</h3>
+        <div class="price">$36</div>
+        <button class="buy-btn">Agregar al carrito</button>
+    </div>
+</div>
+
+<div class="product-card">
+    <img src="https://images.unsplash.com/photo-1686121544103-f1bc403bd6da?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTV8fHNoYW1wb298ZW58MHwwfDB8fHww">
+    <div class="product-info">
+        <h3>Conditioner Silk Touch</h3>
+        <div class="price">$22</div>
+        <button class="buy-btn">Agregar al carrito</button>
+    </div>
+</div>
+
+<div class="product-card">
+    <img src="https://images.unsplash.com/photo-1707910393351-d2d4c10cf632?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fHNoYW1wb298ZW58MHwwfDB8fHww">
+    <div class="product-info">
+        <h3>Conditioner Botanique</h3>
+        <div class="price">$21</div>
+        <button class="buy-btn">Agregar al carrito</button>
+    </div>
+</div>
+
+<div class="product-card">
+    <img src="https://images.unsplash.com/photo-1668025757022-a75458371576?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mjd8fHNoYW1wb298ZW58MHwwfDB8fHww">
+    <div class="product-info">
+        <h3>Argan Repair Mask</h3>
+        <div class="price">$34</div>
+        <button class="buy-btn">Agregar al carrito</button>
+    </div>
+</div>
+
+<div class="product-card">
+    <img src="https://images.unsplash.com/photo-1650543679355-0fcf8a621d1a?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjZ8fHNoYW1wb298ZW58MHwwfDB8fHww">
+    <div class="product-info">
+        <h3>Volume Boost Shampoo</h3>
+        <div class="price">$25</div>
+        <button class="buy-btn">Agregar al carrito</button>
+    </div>
+</div>
+
+<div class="product-card">
+    <img src="https://images.unsplash.com/photo-1588514899099-e2df6951dde6?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mzl8fHNoYW1wb298ZW58MHwwfDB8fHww">
+    <div class="product-info">
+        <h3>Keratin Restore</h3>
+        <div class="price">$38</div>
+        <button class="buy-btn">Agregar al carrito</button>
+    </div>
+</div>
+
+<div class="product-card">
+    <img src="https://images.unsplash.com/photo-1699373381541-8508168f82ca?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDIyfHx8ZW58MHx8fHx8">
+    <div class="product-info">
+        <h3>Hair Elixir Luxe</h3>
+        <div class="price">$42</div>
+        <button class="buy-btn">Agregar al carrito</button>
+    </div>
+</div>
+
+<div class="product-card">
+    <img src="https://images.unsplash.com/photo-1637905351378-67232a5f0c9b?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDI5fHx8ZW58MHx8fHx8">
+    <div class="product-info">
+        <h3>Curl Perfection</h3>
+        <div class="price">$29</div>
+        <button class="buy-btn">Agregar al carrito</button>
+    </div>
+</div>
+
+<div class="product-card">
+    <img src="https://images.unsplash.com/photo-1695048367260-6f2b5ddd3c2e?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDc3fHx8ZW58MHx8fHx8">
+    <div class="product-info">
+        <h3>Hair Serum Gold</h3>
+        <div class="price">$35</div>
+        <button class="buy-btn">Agregar al carrito</button>
+    </div>
+</div>
+
+<div class="product-card">
+    <img src="https://images.unsplash.com/photo-1699528136776-51ddd829363e?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDk4fHx8ZW58MHx8fHx8">
+    <div class="product-info">
+        <h3>Scalp Therapy</h3>
+        <div class="price">$27</div>
+        <button class="buy-btn">Agregar al carrito</button>
+    </div>
+</div>
+
+<div class="product-card">
+    <img src="https://plus.unsplash.com/premium_photo-1661726448863-3534a487b436?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDE1MXx8fGVufDB8fHx8fA%3D%3D">
+    <div class="product-info">
+        <h3>Rosemary Hair Oil</h3>
+        <div class="price">$31</div>
+        <button class="buy-btn">Agregar al carrito</button>
+    </div>
+</div>
+
+<div class="product-card">
+    <img src="https://images.unsplash.com/photo-1695048260867-96c21af90652?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDE3NHx8fGVufDB8fHx8fA%3D%3D">
+    <div class="product-info">
+        <h3>Deep Repair Conditioner</h3>
+        <div class="price">$26</div>
+        <button class="buy-btn">Agregar al carrito</button>
+    </div>
+</div>
+
+<div class="product-card">
+    <img src="https://images.unsplash.com/photo-1694101454182-3db6a9e1c789?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDE4M3x8fGVufDB8fHx8fA%3D%3D">
+    <div class="product-info">
+        <h3>Shine Booster</h3>
+        <div class="price">$28</div>
+        <button class="buy-btn">Agregar al carrito</button>
+    </div>
+</div>
+
+<div class="product-card">
+    <img src="https://images.unsplash.com/photo-1642505172169-b2041b39a57e?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDI0NHx8fGVufDB8fHx8fA%3D%3D">
+    <div class="product-info">
+        <h3>Coconut Hair Cream</h3>
+        <div class="price">$24</div>
+        <button class="buy-btn">Agregar al carrito</button>
+    </div>
+</div>
+
+<div class="product-card">
+    <img src="https://images.unsplash.com/photo-1714761693838-e58d9b8677cc?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDI4Nnx8fGVufDB8fHx8fA%3D%3D">
+    <div class="product-info">
+        <h3>Hair Nutrition Mask</h3>
+        <div class="price">$33</div>
+        <button class="buy-btn">Agregar al carrito</button>
+    </div>
+</div>
+
+<div class="product-card">
+    <img src="https://images.unsplash.com/photo-1698545039108-5cfce2857238?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDI5NXx8fGVufDB8fHx8fA%3D%3D">
+    <div class="product-info">
+        <h3>Thermal Protector</h3>
+        <div class="price">$23</div>
+        <button class="buy-btn">Agregar al carrito</button>
+    </div>
+</div>
+
+<div class="product-card">
+    <img src="https://images.unsplash.com/photo-1682684096929-f1b5e69eda17?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDMzN3x8fGVufDB8fHx8fA%3D%3D">
+    <div class="product-info">
+        <h3>Silk Hair Mist</h3>
+        <div class="price">$20</div>
+        <button class="buy-btn">Agregar al carrito</button>
+    </div>
+</div>
+
+<div class="product-card">
+    <img src="https://images.unsplash.com/photo-1695048260756-a5e8d32eee19?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDMxNXx8fGVufDB8fHx8fA%3D%3D">
+    <div class="product-info">
+        <h3>Intense Growth Formula</h3>
+        <div class="price">$39</div>
+        <button class="buy-btn">Agregar al carrito</button>
+    </div>
+</div>
+
+    </div>
+
+</section>
+<footer class="category-footer">
+
+    <a href="store.html">← Volver a Aura Beauté</a>
+
+</footer>
+</body>
+<script>
+
+const sortSelect = document.getElementById("sortProducts");
+const productsGrid = document.querySelector(".products-grid");
+
+sortSelect.addEventListener("change", () => {
+
+    const cards = [...productsGrid.querySelectorAll(".product-card")];
+
+    if(sortSelect.value === "low"){
+
+        cards.sort((a,b)=>{
+            const priceA = parseFloat(
+                a.querySelector(".price").textContent.replace("$","")
+            );
+
+            const priceB = parseFloat(
+                b.querySelector(".price").textContent.replace("$","")
+            );
+
+            return priceA - priceB;
+        });
+
+    }
+
+    if(sortSelect.value === "high"){
+
+        cards.sort((a,b)=>{
+            const priceA = parseFloat(
+                a.querySelector(".price").textContent.replace("$","")
+            );
+
+            const priceB = parseFloat(
+                b.querySelector(".price").textContent.replace("$","")
+            );
+
+            return priceB - priceA;
+        });
+
+    }
+
+    productsGrid.innerHTML = "";
+
+    cards.forEach(card=>{
+        productsGrid.appendChild(card);
+    });
+
+});
+
+</script>
+</html>

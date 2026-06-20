@@ -1584,3 +1584,12 @@
     }
 
 }
+.category-card{
+    text-decoration:none;
+    color:inherit;
+    display:block;
+}
+
+.category-card:hover{
+    color:inherit;
+}
