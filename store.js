@@ -252,7 +252,7 @@ if (accessDeniedPanel) accessDeniedPanel.style.display = 'none';
             category: 'Fragancias',
             categoryId: 'fragancias',
             price: 42.00,
-            image: 'https://images.unsplash.com/photo-1602607726657-0c76e5121160?q=80&w=600&auto=format&fit=crop',
+            image: 'https://images.unsplash.com/photo-1458538977777-0549b2370168?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8ZnJhZ2FuY2lhfGVufDB8fDB8fHww',
             badge: 'Hogar',
             description: 'Vela aromática de cera de soja con pétalos de rosa y lavanda provenzal.'
         },
@@ -368,7 +368,7 @@ if (accessDeniedPanel) accessDeniedPanel.style.display = 'none';
             category: 'Sets & Regalos',
             categoryId: 'sets-regalos',
             price: 98.00,
-            image: 'https://images.unsplash.com/photo-1614859324967-bbc70d073965?q=80&w=600&auto=format&fit=crop',
+            image: 'https://images.unsplash.com/photo-1519759282350-1ef2048aaa46?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8Y2FqYSUyMHBhcmElMjBob21icmV8ZW58MHx8MHx8fDA%3D',
             badge: 'Para Él',
             description: 'Set masculino con aftershave, crema hidratante y eau de toilette.'
         }
