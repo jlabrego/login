@@ -83,9 +83,19 @@
 
     <form>
 
-        <input type="text" placeholder="Nombre completo" required>
+        <input
+    type="text"
+    id="customerName"
+    placeholder="Nombre completo"
+    required
+>
 
-        <input type="email" placeholder="Correo electrónico" required>
+<input
+    type="email"
+    id="customerEmail"
+    placeholder="Correo electrónico"
+    required
+>
 
         <input type="text" placeholder="Dirección de envío" required>
 
@@ -115,7 +125,18 @@
 </section>
     </body>
     <script>
+const activeUser =
+    JSON.parse(localStorage.getItem("aura_active_user"));
 
+if(activeUser){
+
+    document.getElementById("customerName").value =
+        activeUser.name || "";
+
+    document.getElementById("customerEmail").value =
+        activeUser.email || "";
+
+}
 document.getElementById('payBtn').addEventListener('click', () => {
 
     const orderId =
@@ -144,7 +165,9 @@ ${item.name} (x${item.quantity})     $${subtotal.toFixed(2)}
 <div style="font-family:'Outfit',sans-serif;line-height:1.8;">
 
     <p>
-        Estimado/a <strong>Jessica</strong>,
+        Estimado/a <strong>${
+    activeUser?.name || "Cliente"
+}</strong>,
     </p>
 
     <p>
@@ -256,6 +279,7 @@ ${item.name} (x${item.quantity})     $${subtotal.toFixed(2)}
     localStorage.removeItem("aura_cart");
     localStorage.removeItem("checkout_cart");
 
+    localStorage.setItem("showPurchaseToast", "true");
     window.location.href = "confirmacion.html";
 
 });

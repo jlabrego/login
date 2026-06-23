@@ -843,20 +843,19 @@ if (checkoutBtn) {
             setTimeout(() => toast.remove(), 400);
         }, 4000);
     }
-});
-const savedInbox = localStorage.getItem('aura_inbox');
+    
+const showPurchaseToast =
+    localStorage.getItem("showPurchaseToast");
 
-if (savedInbox) {
-    try {
-        simulatedInbox = JSON.parse(savedInbox);
-        unreadCount = simulatedInbox.filter(m => m.unread).length;
-        updateMailboxUI();
+if(showPurchaseToast === "true"){
 
-        if(unreadCount > 0 && mailboxTrigger){
-            mailboxTrigger.classList.add('glow');
-        }
+    showToast(
+        "Compra realizada",
+        "Tu pedido fue procesado correctamente.",
+        "success"
+    );
 
-    } catch (e) {
-        simulatedInbox = [];
-    }
+    localStorage.removeItem("showPurchaseToast");
 }
+    
+});
