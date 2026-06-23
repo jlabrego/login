@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Confirmación de Compra | Aura Beauté</title>
+<link rel="stylesheet" href="styles.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+
+
+<style>
+body{
+    margin:0;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#faf7f5;
+    font-family:'Outfit',sans-serif;
+}
+
+.success-container{
+    width:100%;
+    max-width:700px;
+    padding:30px;
+}
+
+.success-card{
+    background:white;
+    padding:60px 50px;
+    border-radius:30px;
+    text-align:center;
+    box-shadow:0 20px 50px rgba(0,0,0,.08);
+}
+
+.success-icon{
+    width:100px;
+    height:100px;
+    margin:auto;
+    border-radius:50%;
+    background:#c59b9d;
+    color:white;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:3rem;
+    margin-bottom:20px;
+}
+
+.order-badge{
+    display:inline-block;
+    background:#f7e8e8;
+    color:#b37e81;
+    padding:8px 18px;
+    border-radius:30px;
+    font-weight:600;
+    margin-bottom:20px;
+}
+
+.success-card h1{
+    font-size:3rem;
+    color:#4f3e40;
+    margin-bottom:15px;
+}
+
+.success-card p{
+    color:#7b6c6e;
+    line-height:1.7;
+    margin-bottom:35px;
+}
+
+.order-summary{
+    background:#faf7f5;
+    border-radius:20px;
+    padding:25px;
+    margin-bottom:35px;
+}
+
+.summary-row{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:12px;
+}
+
+.summary-row:last-child{
+    margin-bottom:0;
+}
+
+.success-buttons{
+    display:flex;
+    justify-content:center;
+    gap:15px;
+    flex-wrap:wrap;
+}
+
+.btn-primary{
+    background:#c59b9d;
+    color:white;
+    padding:14px 30px;
+    border-radius:14px;
+    text-decoration:none;
+    font-weight:600;
+}
+
+.btn-primary:hover{
+    background:#b37e81;
+}
+
+.btn-secondary{
+    border:2px solid #c59b9d;
+    color:#b37e81;
+    padding:14px 30px;
+    border-radius:14px;
+    text-decoration:none;
+    font-weight:600;
+}
+ </style>
+</head>
+<body>
+    <div class="success-container">
+
+    <div class="success-card">
+
+        <div class="success-icon">
+            ✓
+        </div>
+
+        <span class="order-badge">
+            Pedido Confirmado
+        </span>
+
+        <h1>¡Gracias por tu compra!</h1>
+
+        <p>
+            Tu pedido ha sido recibido correctamente y ya se
+            encuentra en proceso de preparación.
+        </p>
+
+        <div class="order-summary">
+
+           <div class="summary-row">
+    <span>Número de orden</span>
+    <strong class="order-number"></strong>
+</div>
+
+            <div class="summary-row">
+                <span>Estado</span>
+                <strong>Pago aprobado</strong>
+            </div>
+
+            <div class="summary-row">
+                <span>Entrega estimada</span>
+                <strong>3 - 5 días hábiles</strong>
+            </div>
+
+        </div>
+
+        <div class="success-buttons">
+
+            <a href="store.html" class="btn-primary">
+                Seguir Comprando
+            </a>
+
+            <a href="store.html" class="btn-secondary">
+                Volver al Inicio
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+</body>
+<script>
+const orderNumber = document.querySelector(".order-number");
+
+if(orderNumber){
+    orderNumber.textContent =
+    localStorage.getItem("orderId") || "AB-00000";
+}
+</script>

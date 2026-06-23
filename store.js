@@ -646,84 +646,22 @@ if (!activeUser) {
     // ==========================================================================
     // 5. SIMULACIÓN DE CHECKOUT
     // ==========================================================================
-    const checkoutBtn = document.getElementById('checkoutBtn');
-    if (checkoutBtn) {
-        checkoutBtn.addEventListener('click', () => {
-            checkoutBtn.classList.add('loading');
-            
-            setTimeout(() => {
-                checkoutBtn.classList.remove('loading');
-                closeCart();
+   const checkoutBtn = document.getElementById('checkoutBtn');
 
-                // Notificar éxito
-                showToast('¡Compra Exitosa!', 'Tu pedido de Aura Beauté ha sido procesado.', 'success');
+if (checkoutBtn) {
 
-                // Enviar recibo simulado a la bandeja
-                const orderNumber = Math.floor(100000 + Math.random() * 900000);
-                const orderDate = new Date().toLocaleDateString('es-ES', {
-                    day: 'numeric',
-                    month: 'long',
-                    year: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit'
-                });
+    checkoutBtn.addEventListener('click', () => {
 
-                const itemsHTML = cart.map(item => `
-                    <tr>
-                        <td style="padding: 8px 0; border-bottom: 1px solid rgba(197, 155, 157, 0.1);">${item.name} (x${item.quantity})</td>
-                        <td style="padding: 8px 0; border-bottom: 1px solid rgba(197, 155, 157, 0.1); text-align: right;">$${(item.price * item.quantity).toFixed(2)}</td>
-                    </tr>
-                `).join('');
+        localStorage.setItem(
+            'checkout_cart',
+            JSON.stringify(cart)
+        );
 
-                const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        window.location.href = 'pago.html';
 
-                const receiptHTML = `
-                    <div style="font-family: var(--font-sans); color: var(--text-primary);">
-                        <p>Estimado/a <strong>${activeUser.name}</strong>,</p>
-                        <p>Gracias por tu compra en <strong>Aura Beauté</strong>. Tu pedido ha sido confirmado y ya está en preparación.</p>
-                        
-                        <div style="background: rgba(197, 155, 157, 0.05); border: 1px solid rgba(197, 155, 157, 0.15); border-radius: 12px; padding: 16px; margin: 16px 0;">
-                            <h4 style="margin: 0 0 10px 0; font-family: var(--font-serif); color: var(--primary-hover); font-size: 1.1rem;">Recibo de Pedido #${orderNumber}</h4>
-                            <p style="font-size: 0.8rem; color: var(--text-secondary); margin: 0 0 12px 0;">Fecha: ${orderDate}</p>
-                            
-                            <table style="width: 100%; font-size: 0.9rem; border-collapse: collapse;">
-                                <tbody>
-                                    ${itemsHTML}
-                                    <tr>
-                                        <td style="padding: 12px 0 0 0; font-weight: 700;">Subtotal</td>
-                                        <td style="padding: 12px 0 0 0; font-weight: 700; text-align: right;">$${total.toFixed(2)}</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="padding: 4px 0 0 0; color: var(--text-secondary);">Envío</td>
-                                        <td style="padding: 4px 0 0 0; text-align: right; color: #7da08a;">Gratis</td>
-                                    </tr>
-                                    <tr style="border-top: 1px solid rgba(197, 155, 157, 0.3);">
-                                        <td style="padding: 12px 0 0 0; font-weight: 700; font-size: 1.05rem;">Total pagado</td>
-                                        <td style="padding: 12px 0 0 0; font-weight: 700; font-size: 1.05rem; text-align: right; color: var(--primary-hover);">$${total.toFixed(2)}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <p style="font-size: 0.85rem; color: var(--text-secondary);">Enviaremos los detalles de seguimiento en cuanto el paquete salga de nuestros laboratorios botánicos.</p>
-                    </div>
-                `;
+    });
 
-                addMessageToInbox(
-                    'Aura Beauté Boutique <ventas@aurabeaute.com>',
-                    `Confirmación de Pedido #${orderNumber}`,
-                    receiptHTML,
-                    null,
-                    true // Activar badge
-                );
-
-                // Vaciar carrito
-                cart = [];
-                saveCart();
-                updateCartUI();
-
-            }, 2000);
-        });
-    }
+}
 
     // ==========================================================================
     // 6. MOTOR DEL BUZÓN DE SIMULACIÓN Y TOASTS
@@ -906,3 +844,19 @@ if (!activeUser) {
         }, 4000);
     }
 });
+const savedInbox = localStorage.getItem('aura_inbox');
+
+if (savedInbox) {
+    try {
+        simulatedInbox = JSON.parse(savedInbox);
+        unreadCount = simulatedInbox.filter(m => m.unread).length;
+        updateMailboxUI();
+
+        if(unreadCount > 0 && mailboxTrigger){
+            mailboxTrigger.classList.add('glow');
+        }
+
+    } catch (e) {
+        simulatedInbox = [];
+    }
+}

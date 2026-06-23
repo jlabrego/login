@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Pago | Aura Beauté</title>
+        <link rel="stylesheet" href="styles.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+
+
+        <style>
+            body{
+    background:#faf7f5;
+    font-family:'Outfit', sans-serif;
+    margin:0;
+    padding:40px 20px;
+}
+
+.checkout-container{
+    max-width:700px;
+    margin:50px auto;
+    background:white;
+    padding:40px;
+    border-radius:24px;
+    box-shadow:0 15px 40px rgba(0,0,0,.08);
+}
+
+.checkout-container h1{
+    text-align:center;
+    font-family:'Playfair Display', serif;
+    color:#5b4547;
+    margin-bottom:30px;
+}
+
+.checkout-container form{
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+}
+
+.checkout-container input{
+    padding:15px;
+    border:1px solid #e5d8d8;
+    border-radius:14px;
+    font-size:1rem;
+    outline:none;
+}
+
+.checkout-container input:focus{
+    border-color:#c59b9d;
+}
+
+.row{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+}
+
+#payBtn{
+    background:#c59b9d;
+    color:white;
+    border:none;
+    padding:16px;
+    border-radius:14px;
+    font-size:1rem;
+    font-weight:600;
+    cursor:pointer;
+    transition:.3s;
+}
+
+#payBtn:hover{
+    background:#b37e81;
+    transform:translateY(-2px);
+}
+        </style>
+    </head>
+    <body>
+        <section class="checkout-container">
+
+    <h1>Finalizar Compra</h1>
+
+    <form>
+
+        <input type="text" placeholder="Nombre completo" required>
+
+        <input type="email" placeholder="Correo electrónico" required>
+
+        <input type="text" placeholder="Dirección de envío" required>
+
+        <input type="text" placeholder="Número de tarjeta" required>
+
+        <div class="row">
+            <input type="text" placeholder="MM/AA" required>
+            <input type="text" placeholder="CVV" required>
+        </div>
+
+        <div style="background:#faf7f5;padding:20px;border-radius:15px;">
+            <h3>Resumen del pedido</h3>
+            <p>Subtotal: <strong>$245.00</strong></p>
+            <p>Envío: <strong>Gratis</strong></p>
+            <hr>
+            <p style="font-size:1.2rem;">
+                Total: <strong>$245.00</strong>
+            </p>
+        </div>
+
+        <button type="button" id="payBtn">
+            Pagar Ahora
+        </button>
+
+    </form>
+
+</section>
+    </body>
+    <script>
+
+document.getElementById('payBtn').addEventListener('click', () => {
+
+    const orderId =
+        "#" + Math.floor(Math.random() * 900000 + 100000);
+
+    // LEER carrito antes de borrarlo
+    const cart =
+        JSON.parse(localStorage.getItem("checkout_cart")) || [];
+
+    let itemsHTML = "";
+    let total = 0;
+
+    cart.forEach(item => {
+
+        const subtotal =
+            item.price * item.quantity;
+
+        total += subtotal;
+
+        itemsHTML += `
+${item.name} (x${item.quantity})     $${subtotal.toFixed(2)}
+`;
+    });
+
+   const body = `
+<div style="font-family:'Outfit',sans-serif;line-height:1.8;">
+
+    <p>
+        Estimado/a <strong>Jessica</strong>,
+    </p>
+
+    <p>
+        Gracias por tu compra en <strong>Aura Beauté</strong>.
+        Tu pedido ha sido confirmado y ya está en preparación.
+    </p>
+
+    <div style="
+        background:#faf7f5;
+        border:1px solid #f0e4e4;
+        border-radius:18px;
+        padding:25px;
+        margin:25px 0;
+    ">
+
+        <h2 style="
+            margin-top:0;
+            color:#b37e81;
+            font-family:'Playfair Display',serif;
+        ">
+            Recibo de Pedido ${orderId}
+        </h2>
+
+        <p style="color:#777;">
+            Fecha: ${new Date().toLocaleString()}
+        </p>
+
+        <hr style="border:none;border-top:1px solid #e6dede;">
+
+        ${cart.map(item => `
+            <div style="
+                display:flex;
+                justify-content:space-between;
+                margin:12px 0;
+            ">
+                <span>${item.name} (x${item.quantity})</span>
+                <strong>$${(item.price * item.quantity).toFixed(2)}</strong>
+            </div>
+        `).join('')}
+
+        <hr style="border:none;border-top:1px solid #e6dede;">
+
+        <div style="
+            display:flex;
+            justify-content:space-between;
+            margin:10px 0;
+        ">
+            <span>Subtotal</span>
+            <strong>$${total.toFixed(2)}</strong>
+        </div>
+
+        <div style="
+            display:flex;
+            justify-content:space-between;
+            margin:10px 0;
+        ">
+            <span>Envío</span>
+            <strong style="color:#7ca37c;">Gratis</strong>
+        </div>
+
+        <hr style="border:none;border-top:1px solid #e6dede;">
+
+        <div style="
+            display:flex;
+            justify-content:space-between;
+            font-size:1.2rem;
+            margin-top:15px;
+        ">
+            <strong>Total pagado</strong>
+            <strong style="color:#b37e81;">
+                $${total.toFixed(2)}
+            </strong>
+        </div>
+
+    </div>
+
+    <p>
+        Enviaremos los detalles de seguimiento en cuanto el paquete salga de nuestros laboratorios botánicos.
+    </p>
+
+</div>
+`;
+
+    const inbox =
+        JSON.parse(localStorage.getItem("aura_inbox")) || [];
+
+    inbox.unshift({
+        id: 'msg-' + Date.now() + '-' + Math.floor(Math.random() * 100),
+        sender: "Aura Beauté Boutique",
+        subject: `Confirmación de Pedido ${orderId}`,
+        body: body,
+        time: new Date().toLocaleTimeString([], {
+            hour: '2-digit',
+            minute: '2-digit'
+        }),
+        unread: true,
+        isSMS: false,
+        actionData: null
+    });
+
+    localStorage.setItem(
+        "aura_inbox",
+        JSON.stringify(inbox)
+    );
+
+    localStorage.setItem("orderId", orderId);
+
+    // AHORA sí borrar
+    localStorage.removeItem("aura_cart");
+    localStorage.removeItem("checkout_cart");
+
+    window.location.href = "confirmacion.html";
+
+});
+
+</script>
+</html>

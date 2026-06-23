@@ -312,6 +312,7 @@
 
 </footer>
 </body>
+
 <script>
 
 const sortSelect = document.getElementById("sortProducts");
@@ -360,6 +361,69 @@ sortSelect.addEventListener("change", () => {
     });
 
 });
+document.querySelectorAll(".buy-btn").forEach(button => {
 
+    button.addEventListener("click", () => {
+
+        const card = button.closest(".product-card");
+
+        const product = {
+            id: card.querySelector("h3").textContent
+                    .toLowerCase()
+                    .replace(/\s+/g,"-"),
+
+            name: card.querySelector("h3").textContent,
+
+            price: parseFloat(
+                card.querySelector(".price")
+                    .textContent
+                    .replace("$","")
+            ),
+
+            image: card.querySelector("img").src,
+
+            quantity: 1
+        };
+
+        let cart =
+            JSON.parse(localStorage.getItem("aura_cart")) || [];
+
+        const existing = cart.find(
+            item => item.name === product.name
+        );
+
+        if(existing){
+            existing.quantity++;
+        }else{
+            cart.push(product);
+        }
+
+        localStorage.setItem(
+            "aura_cart",
+            JSON.stringify(cart)
+        );
+
+        alert("Producto agregado al carrito");
+    });
+
+});
+const mensaje = document.createElement("div");
+
+mensaje.textContent = "✅ Producto agregado al carrito";
+
+mensaje.style.position = "fixed";
+mensaje.style.bottom = "20px";
+mensaje.style.right = "20px";
+mensaje.style.background = "#c59b9d";
+mensaje.style.color = "white";
+mensaje.style.padding = "12px 20px";
+mensaje.style.borderRadius = "10px";
+mensaje.style.zIndex = "9999";
+
+document.body.appendChild(mensaje);
+
+setTimeout(() => {
+    mensaje.remove();
+}, 2500);
 </script>
 </html>
