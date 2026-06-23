@@ -164,7 +164,7 @@ if (!activeUser) {
             category: 'Cuidado Facial',
             categoryId: 'cuidado-facial',
             price: 72.00,
-            image: 'https://images.unsplash.com/photo-1570194065650-d99fb4b38b17?q=80&w=600&auto=format&fit=crop',
+            image: 'https://media.istockphoto.com/id/2264835969/es/foto/cuentagotas-de-s%C3%A9rum-para-el-cuidado-de-la-piel-con-matraces-de-laboratorio.webp?a=1&b=1&s=612x612&w=0&k=20&c=qPkj731BNPGrSew2nou7KOtVDx23gWmJfN-ZaniDRg4=',
             badge: 'Premium',
             description: 'Sérum anti-edad con retinol botánico y extracto de rosa de Damasco.'
         },
@@ -196,7 +196,7 @@ if (!activeUser) {
             category: 'Maquillaje',
             categoryId: 'maquillaje',
             price: 58.00,
-            image: 'https://images.unsplash.com/photo-1583241800698-e8ab01b85405?q=80&w=600&auto=format&fit=crop',
+            image: 'https://images.unsplash.com/photo-1583784561105-a674080f391e?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MzJ8fG1ha2V1cHxlbnwwfHwwfHx8MA%3D%3D',
             badge: 'Exclusiva',
             description: 'Paleta de sombras con 12 tonos cálidos de acabado satinado y metálico.'
         },
@@ -206,7 +206,7 @@ if (!activeUser) {
             category: 'Maquillaje',
             categoryId: 'maquillaje',
             price: 44.00,
-            image: 'https://images.unsplash.com/photo-1631214540553-a5e085dff4e4?q=80&w=600&auto=format&fit=crop',
+            image: 'https://images.unsplash.com/photo-1557205465-f3762edea6d3?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NjN8fG1ha2V1cHxlbnwwfHwwfHx8MA%3D%3D',
             badge: 'Natural',
             description: 'Base de maquillaje ligera con SPF 30 y extractos de manzanilla.'
         },
@@ -216,7 +216,7 @@ if (!activeUser) {
             category: 'Maquillaje',
             categoryId: 'maquillaje',
             price: 28.00,
-            image: 'https://images.unsplash.com/photo-1512207736890-6ffed8a84e8d?q=80&w=600&auto=format&fit=crop',
+            image: 'https://images.unsplash.com/photo-1615396899839-c99c121888b0?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NzB8fG1ha2V1cHxlbnwwfHwwfHx8MA%3D%3D',
             badge: 'Top 5',
             description: 'Máscara de pestañas volumizadora y alargadora con cera de abejas.'
         },
@@ -354,7 +354,7 @@ if (!activeUser) {
             category: 'Sets & Regalos',
             categoryId: 'sets-regalos',
             price: 85.00,
-            image: 'https://images.unsplash.com/photo-1522338242992-e1a54571a9f7?q=80&w=600&auto=format&fit=crop',
+            image: 'https://images.unsplash.com/photo-1676570092589-a6c09ecbb373?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTA5fHxtYWtldXB8ZW58MHx8MHx8fDA%3D',
             badge: 'Travel',
             description: 'Kit de viaje con 5 productos miniatura en neceser de lino orgánico.'
         },
