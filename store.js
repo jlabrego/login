@@ -42,16 +42,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const storeWrapper = document.getElementById('storeWrapper');
     const accessDeniedPanel = document.getElementById('accessDeniedPanel');
 
-   if (storeWrapper) storeWrapper.style.display = 'block';
-if (accessDeniedPanel) accessDeniedPanel.style.display = 'none';
+if (!activeUser) {
+        window.location.href = 'login.html';
+        return;
+    }
 
-    // Hay sesión. Mostrar la tienda y ocultar panel de acceso denegado
     if (storeWrapper) storeWrapper.style.display = 'block';
     if (accessDeniedPanel) accessDeniedPanel.style.display = 'none';
 
-    if (activeUser) {
     initializeUserUI(activeUser);
+
+//Login obligatorio
+if (!activeUser) {
+    window.location.href = 'login.html';
+    return;
 }
+
 
     function initializeUserUI(user) {
 
@@ -83,7 +89,7 @@ if (accessDeniedPanel) accessDeniedPanel.style.display = 'none';
             showToast('Cerrando Sesión', 'Redirigiendo al tocador de accesos...', 'success');
             setTimeout(() => {
                 localStorage.removeItem('aura_active_user');
-                window.location.href = 'index.html';
+                window.location.href = 'login.html';
             }, 1200);
         });
     }
