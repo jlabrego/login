@@ -92,6 +92,12 @@
                             </svg>
                             Mi Tocador
                         </a>
+                        <a href="#" class="dropdown-item" id="setupFaceBtn">
+                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M9 3H5a2 2 0 0 0-2 2v4M21 9V5a2 2 0 0 0-2-2h-4M3 15v4a2 2 0 0 0 2 2h4M15 21h4a2 2 0 0 0 2-2v-4M8 11a1 1 0 1 0 0-2 1 1 0 0 0 0 2M16 11a1 1 0 1 0 0-2 1 1 0 0 0 0 2M12 16c1.5 0 2.5-1 3-2H9c.5 1 1.5 2 3 2Z"/>
+                            </svg>
+                            Configurar Face ID
+                        </a>
                         <a href="#" class="dropdown-item" id="logoutBtn">
                             <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
@@ -706,6 +712,44 @@
         <!-- Contenedor de notificaciones Toast -->
         <div class="toast-container" id="toastContainer"></div>
     </div> <!-- Fin de storeWrapper -->
+
+    <!-- Modal: Escáner Facial (Face ID) -->
+    <div class="modal-overlay" id="faceScannerModal" role="dialog" aria-modal="true" aria-labelledby="faceModalTitle">
+        <div class="modal-card face-modal-card" style="max-width: 480px; background: rgba(255, 255, 255, 0.95); margin: auto;">
+            <button class="modal-close" id="faceModalClose" aria-label="Cerrar">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+
+            <!-- Vista 1: Escáner de Cámara Activo -->
+            <div class="modal-view" id="faceCaptureView">
+                <div class="modal-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                        <circle cx="12" cy="13" r="4"></circle>
+                    </svg>
+                </div>
+                <h3 id="faceModalTitle">Configurar Face ID</h3>
+                <p class="modal-subtitle" id="faceModalSubtitle">Alinea tu rostro dentro del marco y mantente inmóvil.</p>
+                
+                <div class="face-scanner-container" style="position: relative; width: 100%; aspect-ratio: 4/3; background: #000; border-radius: 16px; overflow: hidden; margin: 10px 0;">
+                    <video id="faceVideo" autoplay playsinline muted style="width: 100%; height: 100%; object-fit: cover;"></video>
+                    <canvas id="faceOverlayCanvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;"></canvas>
+                    <div class="face-scanner-reticle"></div>
+                    <div class="face-scanner-line"></div>
+                    <div class="camera-flash" id="cameraFlash"></div>
+                </div>
+
+                <div class="face-controls" style="display: flex; gap: 12px; margin-top: 10px;">
+                    <button type="button" class="submit-btn" id="faceCaptureBtn" style="width: 100%;">
+                        <span class="btn-text">Capturar Rostro</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="store.js"></script>
     <script>

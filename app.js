@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
+    let registerFaceDataURL = null;
     // ==========================================================================
     // 1. BASE DE DATOS LOCAL (Lógica de Almacenamiento)
     // ==========================================================================
@@ -580,7 +581,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 email: email.value.trim(),
                 username: generatedUsername,
                 password: pass.value,
-                phone: `+504${Math.floor(10000000 + Math.random() * 90000000)}` // Generar un número simulado
+                phone: `+504${Math.floor(10000000 + Math.random() * 90000000)}`, // Generar un número simulado
+                faceImage: registerFaceDataURL || null
             };
 
             // Enviar correo de verificación simulado
@@ -918,5 +920,392 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
         }, 1500);
+    });
+
+    // ==========================================================================
+    // 15. LÓGICA DE RECONOCIMIENTO FACIAL (FACE ID)
+    // ==========================================================================
+    const faceScannerModal = document.getElementById('faceScannerModal');
+    const faceModalClose = document.getElementById('faceModalClose');
+    const loginFaceBtn = document.getElementById('loginFaceBtn');
+    const registerFaceConfigBtn = document.getElementById('registerFaceConfigBtn');
+    const registerFaceStatus = document.getElementById('registerFaceStatus');
+    
+    const faceCaptureView = document.getElementById('faceCaptureView');
+    const faceCompareView = document.getElementById('faceCompareView');
+    const faceVideo = document.getElementById('faceVideo');
+    const faceOverlayCanvas = document.getElementById('faceOverlayCanvas');
+    const faceCaptureBtn = document.getElementById('faceCaptureBtn');
+    const cameraFlash = document.getElementById('cameraFlash');
+    
+    const faceLiveCanvas = document.getElementById('faceLiveCanvas');
+    const faceRegisteredPhoto = document.getElementById('faceRegisteredPhoto');
+    const matchVal = document.getElementById('matchVal');
+    const matchFill = document.getElementById('matchFill');
+    const faceCompareStatus = document.getElementById('faceCompareStatus');
+    const faceSuccessBtn = document.getElementById('faceSuccessBtn');
+    const faceRetryBtn = document.getElementById('faceRetryBtn');
+    const faceCompareIcon = document.getElementById('faceCompareIcon');
+    
+    let faceStream = null;
+    let faceScannerMode = 'login'; // 'login' o 'register'
+    let isOverlayLoopActive = false;
+    let isScanningComplete = false;
+    
+    // Puntos biométricos simulados
+    const facePoints = [
+        {x: 0.35, y: 0.35}, {x: 0.45, y: 0.32}, {x: 0.55, y: 0.32}, {x: 0.65, y: 0.35}, // Cejas
+        {x: 0.40, y: 0.42}, {x: 0.60, y: 0.42}, // Ojos
+        {x: 0.50, y: 0.48}, {x: 0.50, y: 0.55}, {x: 0.46, y: 0.58}, {x: 0.54, y: 0.58}, // Nariz
+        {x: 0.44, y: 0.66}, {x: 0.50, y: 0.65}, {x: 0.56, y: 0.66}, {x: 0.50, y: 0.70}, // Boca
+        {x: 0.30, y: 0.45}, {x: 0.70, y: 0.45}, {x: 0.33, y: 0.62}, {x: 0.67, y: 0.62}, {x: 0.50, y: 0.80} // Contorno
+    ];
+
+    function openFaceScanner(mode) {
+        faceScannerMode = mode;
+        isScanningComplete = false;
+        
+        // Resetear vistas
+        faceCaptureView.classList.remove('modal-view--hidden');
+        faceCompareView.classList.add('modal-view--hidden');
+        faceSuccessBtn.style.display = 'none';
+        faceRetryBtn.style.display = 'none';
+        
+        // Configurar títulos y textos según el modo
+        if (mode === 'register') {
+            document.getElementById('faceModalTitle').textContent = 'Registrar Rostro (Face ID)';
+            document.getElementById('faceModalSubtitle').textContent = 'Coloca tu rostro en el centro para guardarlo como tu firma biométrica.';
+            faceCaptureBtn.querySelector('.btn-text').textContent = 'Capturar Rostro';
+        } else {
+            document.getElementById('faceModalTitle').textContent = 'Escáner Facial Biométrico';
+            document.getElementById('faceModalSubtitle').textContent = 'Alinea tu rostro dentro del marco para iniciar sesión automáticamente.';
+            faceCaptureBtn.querySelector('.btn-text').textContent = 'Escanear y Autenticar';
+        }
+        
+        faceScannerModal.classList.add('active');
+        startCamera();
+    }
+
+    function closeFaceScanner() {
+        stopCamera();
+        faceScannerModal.classList.remove('active');
+    }
+
+    function startCamera() {
+        if (faceStream) stopCamera();
+        
+        navigator.mediaDevices.getUserMedia({ 
+            video: { 
+                width: { ideal: 640 }, 
+                height: { ideal: 480 },
+                facingMode: "user"
+            } 
+        })
+        .then(stream => {
+            faceStream = stream;
+            faceVideo.srcObject = stream;
+            faceVideo.play();
+            
+            // Iniciar ciclo de dibujo del overlay
+            isOverlayLoopActive = true;
+            requestAnimationFrame(tickFaceOverlay);
+        })
+        .catch(err => {
+            console.error('Error al acceder a la cámara:', err);
+            showToast('Error de Cámara', 'No pudimos acceder a tu cámara. Asegúrate de dar los permisos necesarios en el navegador.', 'error');
+            closeFaceScanner();
+        });
+    }
+
+    function stopCamera() {
+        isOverlayLoopActive = false;
+        if (faceStream) {
+            faceStream.getTracks().forEach(track => track.stop());
+            faceStream = null;
+        }
+        faceVideo.srcObject = null;
+    }
+
+    function tickFaceOverlay() {
+        if (!isOverlayLoopActive) return;
+        
+        const width = faceOverlayCanvas.width = faceVideo.videoWidth || 640;
+        const height = faceOverlayCanvas.height = faceVideo.videoHeight || 480;
+        const ctx = faceOverlayCanvas.getContext('2d');
+        
+        ctx.clearRect(0, 0, width, height);
+        
+        // Dibujar malla biométrica con una leve vibración simulada
+        ctx.fillStyle = 'rgba(179, 126, 129, 0.85)'; // var(--primary) con opacidad
+        ctx.strokeStyle = 'rgba(179, 126, 129, 0.3)';
+        ctx.lineWidth = 1;
+        
+        const absolutePoints = facePoints.map(pt => {
+            // Favor de simular vibración
+            const jitterX = (Math.random() - 0.5) * 2.5;
+            const jitterY = (Math.random() - 0.5) * 2.5;
+            return {
+                x: pt.x * width + jitterX,
+                y: pt.y * height + jitterY
+            };
+        });
+        
+        // Dibujar puntos
+        absolutePoints.forEach(pt => {
+            ctx.beginPath();
+            ctx.arc(pt.x, pt.y, 4, 0, 2 * Math.PI);
+            ctx.fill();
+            
+            // Brillo adicional para puntos clave
+            ctx.beginPath();
+            ctx.arc(pt.x, pt.y, 8, 0, 2 * Math.PI);
+            ctx.fillStyle = 'rgba(179, 126, 129, 0.15)';
+            ctx.fill();
+            ctx.fillStyle = 'rgba(179, 126, 129, 0.85)';
+        });
+        
+        // Conectar algunos puntos para simular la estructura
+        ctx.beginPath();
+        // Contorno
+        ctx.moveTo(absolutePoints[14].x, absolutePoints[14].y);
+        ctx.lineTo(absolutePoints[16].x, absolutePoints[16].y);
+        ctx.lineTo(absolutePoints[18].x, absolutePoints[18].y);
+        ctx.lineTo(absolutePoints[17].x, absolutePoints[17].y);
+        ctx.lineTo(absolutePoints[15].x, absolutePoints[15].y);
+        ctx.stroke();
+        
+        // Nariz y cejas
+        ctx.beginPath();
+        ctx.moveTo(absolutePoints[1].x, absolutePoints[1].y);
+        ctx.lineTo(absolutePoints[6].x, absolutePoints[6].y);
+        ctx.lineTo(absolutePoints[7].x, absolutePoints[7].y);
+        ctx.moveTo(absolutePoints[2].x, absolutePoints[2].y);
+        ctx.lineTo(absolutePoints[6].x, absolutePoints[6].y);
+        ctx.stroke();
+        
+        if (isOverlayLoopActive) {
+            requestAnimationFrame(tickFaceOverlay);
+        }
+    }
+
+    function captureFaceSnapshot() {
+        // Efecto Flash
+        cameraFlash.classList.add('flash-active');
+        setTimeout(() => cameraFlash.classList.remove('flash-active'), 400);
+
+        // Capturar frame en un canvas temporal
+        const tempCanvas = document.createElement('canvas');
+        tempCanvas.width = faceVideo.videoWidth || 640;
+        tempCanvas.height = faceVideo.videoHeight || 480;
+        const tempCtx = tempCanvas.getContext('2d');
+        
+        // Dibujar el video
+        tempCtx.drawImage(faceVideo, 0, 0, tempCanvas.width, tempCanvas.height);
+        const dataURL = tempCanvas.toDataURL('image/jpeg');
+
+        stopCamera();
+
+        if (faceScannerMode === 'register') {
+            // Guardar imagen para el registro
+            registerFaceDataURL = dataURL;
+            registerFaceStatus.textContent = 'Rostro Registrado ✓';
+            registerFaceConfigBtn.style.borderColor = 'var(--success)';
+            registerFaceConfigBtn.style.color = 'var(--success)';
+            registerFaceConfigBtn.style.background = 'rgba(125, 160, 138, 0.08)';
+            
+            showToast('Rostro Capturado', 'Tu firma facial ha sido registrada temporalmente. Completa el formulario para guardarla.', 'success');
+            closeFaceScanner();
+        } else {
+            // Modo Login: Iniciar comparación biométrica
+            runBiometricComparison(dataURL);
+        }
+    }
+
+    function runBiometricComparison(liveDataURL) {
+        faceCaptureView.classList.add('modal-view--hidden');
+        faceCompareView.classList.remove('modal-view--hidden');
+        
+        // Renderizar foto en vivo en el canvas de comparación
+        const liveCtx = faceLiveCanvas.getContext('2d');
+        const imgLive = new Image();
+        imgLive.onload = () => {
+            faceLiveCanvas.width = imgLive.width;
+            faceLiveCanvas.height = imgLive.height;
+            liveCtx.drawImage(imgLive, 0, 0);
+        };
+        imgLive.src = liveDataURL;
+
+        // Buscar si existe algún usuario con rostro registrado
+        const emailInputVal = document.getElementById('loginEmail').value.trim();
+        const users = getUsers();
+        let matchedUser = null;
+
+        if (emailInputVal) {
+            matchedUser = users.find(u => u.email.toLowerCase() === emailInputVal.toLowerCase() && u.faceImage);
+        } else {
+            // Si no introdujo email, buscar el primer usuario que tenga rostro registrado
+            matchedUser = users.find(u => u.faceImage);
+        }
+
+        if (!matchedUser) {
+            // No hay coincidencias en la BD
+            faceRegisteredPhoto.src = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop'; // Avatar por defecto
+            faceCompareIcon.className = 'modal-icon';
+            faceCompareIcon.style.color = 'var(--error)';
+            faceCompareIcon.style.backgroundColor = 'rgba(205, 134, 136, 0.1)';
+            faceCompareIcon.style.borderColor = 'rgba(205, 134, 136, 0.2)';
+            faceCompareIcon.innerHTML = `
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="15" y1="9" x2="9" y2="15"></line>
+                    <line x1="9" y1="9" x2="15" y2="15"></line>
+                </svg>
+            `;
+            
+            document.getElementById('faceCompareTitle').textContent = 'Error de Autenticación';
+            document.getElementById('faceCompareSubtitle').textContent = 'No se encontró ningún rostro registrado coincidente.';
+            
+            // Simular análisis fallido
+            animateProgress(0, 32, 1000, () => {
+                matchVal.style.color = 'var(--error)';
+                matchFill.style.backgroundColor = 'var(--error)';
+                faceCompareStatus.textContent = '❌ Sin coincidencias biométricas.';
+                faceCompareStatus.style.color = 'var(--error)';
+                faceRetryBtn.style.display = 'block';
+            });
+            return;
+        }
+
+        // Si se encuentra un usuario registrado con rostro
+        faceRegisteredPhoto.src = matchedUser.faceImage;
+        
+        // Simular análisis exitoso con progreso interactivo
+        document.getElementById('faceCompareTitle').textContent = 'Verificación Biométrica';
+        document.getElementById('faceCompareSubtitle').textContent = 'Comparando características faciales en vivo con el registro guardado.';
+        faceCompareIcon.className = 'modal-icon';
+        faceCompareIcon.style.color = 'var(--primary)';
+        faceCompareIcon.style.backgroundColor = 'rgba(197, 155, 157, 0.1)';
+        faceCompareIcon.style.borderColor = 'rgba(197, 155, 157, 0.2)';
+        faceCompareIcon.innerHTML = `
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="16" x2="12" y2="12"></line>
+                <line x1="12" y1="8" x2="12.01" y2="8"></line>
+            </svg>
+        `;
+        
+        const steps = [
+            { limit: 30, text: 'Analizando geometría de ojos y nariz...' },
+            { limit: 65, text: 'Verificando correspondencia de puntos de control...' },
+            { limit: 90, text: 'Calculando distancia biométrica...' },
+            { limit: 98.7, text: '¡Coincidencia confirmada!' }
+        ];
+        
+        let stepIdx = 0;
+        
+        function runStep() {
+            if (stepIdx >= steps.length) {
+                // Completado
+                faceCompareIcon.className = 'modal-icon modal-icon--success';
+                faceCompareIcon.style.color = 'var(--success)';
+                faceCompareIcon.style.backgroundColor = 'rgba(125, 160, 138, 0.1)';
+                faceCompareIcon.style.borderColor = 'rgba(125, 160, 138, 0.2)';
+                faceCompareIcon.innerHTML = `
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                    </svg>
+                `;
+                
+                matchVal.style.color = 'var(--success)';
+                matchFill.style.backgroundColor = 'var(--success)';
+                faceCompareStatus.textContent = `✓ Rostro verificado: ${matchedUser.name}`;
+                faceCompareStatus.style.color = 'var(--success)';
+                
+                // Mostrar botón de continuar y auto-loggear
+                faceSuccessBtn.style.display = 'block';
+                
+                // Guardar sesión del usuario
+                localStorage.setItem('aura_active_user', JSON.stringify({
+                    name: matchedUser.name,
+                    email: matchedUser.email,
+                    username: matchedUser.username,
+                    phone: matchedUser.phone
+                }));
+                
+                showToast('Acceso Autorizado', `Bienvenido de nuevo, ${matchedUser.name}.`, 'success');
+                
+                // Auto login en 1.5s
+                setTimeout(() => {
+                    closeFaceScanner();
+                    animateLoginSuccess(matchedUser);
+                }, 1500);
+                return;
+            }
+            
+            const currentStep = steps[stepIdx];
+            faceCompareStatus.textContent = currentStep.text;
+            
+            const startVal = stepIdx === 0 ? 0 : steps[stepIdx - 1].limit;
+            animateProgress(startVal, currentStep.limit, 600, () => {
+                stepIdx++;
+                setTimeout(runStep, 200);
+            });
+        }
+        
+        runStep();
+    }
+
+    function animateProgress(start, end, duration, callback) {
+        const startTime = performance.now();
+        
+        function tick(now) {
+            const elapsed = now - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            // Función de easing out cuadratica
+            const ease = 1 - (1 - progress) * (1 - progress);
+            const currentVal = start + (end - start) * ease;
+            
+            matchVal.textContent = `${currentVal.toFixed(1)}%`;
+            matchFill.style.width = `${currentVal}%`;
+            
+            if (progress < 1) {
+                requestAnimationFrame(tick);
+            } else {
+                matchVal.textContent = `${end.toFixed(1)}%`;
+                matchFill.style.width = `${end}%`;
+                if (callback) callback();
+            }
+        }
+        
+        requestAnimationFrame(tick);
+    }
+
+    // Eventos
+    loginFaceBtn.addEventListener('click', () => {
+        // Verificar primero si algún usuario tiene rostro registrado
+        const users = getUsers();
+        const hasRegisteredFace = users.some(u => u.faceImage);
+        
+        if (!hasRegisteredFace) {
+            showToast('Face ID no configurado', 'No hay ningún rostro guardado en este dispositivo. Regístrate o configúralo desde el perfil.', 'error');
+            return;
+        }
+        
+        openFaceScanner('login');
+    });
+    
+    registerFaceConfigBtn.addEventListener('click', () => openFaceScanner('register'));
+    faceModalClose.addEventListener('click', closeFaceScanner);
+    faceCaptureBtn.addEventListener('click', captureFaceSnapshot);
+    
+    faceRetryBtn.addEventListener('click', () => {
+        openFaceScanner('login');
+    });
+    
+    faceSuccessBtn.addEventListener('click', () => {
+        closeFaceScanner();
+        const activeUser = JSON.parse(localStorage.getItem('aura_active_user'));
+        if (activeUser) animateLoginSuccess(activeUser);
     });
 });

@@ -94,6 +94,16 @@ if (!activeUser) {
         });
     }
 
+    // Configurar Face ID desde boutique
+    const setupFaceBtn = document.getElementById('setupFaceBtn');
+    if (setupFaceBtn) {
+        setupFaceBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (profileDropdown) profileDropdown.classList.remove('active');
+            openFaceScanner();
+        });
+    }
+
     // ==========================================================================
     // 2. DROPDOWN DE PERFIL
     // ==========================================================================
@@ -857,5 +867,167 @@ if(showPurchaseToast === "true"){
 
     localStorage.removeItem("showPurchaseToast");
 }
+
+    // ==========================================================================
+    // LÓGICA DE CONFIGURACIÓN DE FACE ID
+    // ==========================================================================
+    const faceScannerModal = document.getElementById('faceScannerModal');
+    const faceModalClose = document.getElementById('faceModalClose');
+    const faceVideo = document.getElementById('faceVideo');
+    const faceOverlayCanvas = document.getElementById('faceOverlayCanvas');
+    const faceCaptureBtn = document.getElementById('faceCaptureBtn');
+    const cameraFlash = document.getElementById('cameraFlash');
+    
+    let faceStream = null;
+    let isOverlayLoopActive = false;
+    
+    const facePoints = [
+        {x: 0.35, y: 0.35}, {x: 0.45, y: 0.32}, {x: 0.55, y: 0.32}, {x: 0.65, y: 0.35},
+        {x: 0.40, y: 0.42}, {x: 0.60, y: 0.42},
+        {x: 0.50, y: 0.48}, {x: 0.50, y: 0.55}, {x: 0.46, y: 0.58}, {x: 0.54, y: 0.58},
+        {x: 0.44, y: 0.66}, {x: 0.50, y: 0.65}, {x: 0.56, y: 0.66}, {x: 0.50, y: 0.70},
+        {x: 0.30, y: 0.45}, {x: 0.70, y: 0.45}, {x: 0.33, y: 0.62}, {x: 0.67, y: 0.62}, {x: 0.50, y: 0.80}
+    ];
+
+    function openFaceScanner() {
+        faceScannerModal.classList.add('active');
+        startCamera();
+    }
+
+    function closeFaceScanner() {
+        stopCamera();
+        faceScannerModal.classList.remove('active');
+    }
+
+    function startCamera() {
+        if (faceStream) stopCamera();
+        
+        navigator.mediaDevices.getUserMedia({ 
+            video: { 
+                width: { ideal: 640 }, 
+                height: { ideal: 480 },
+                facingMode: "user"
+            } 
+        })
+        .then(stream => {
+            faceStream = stream;
+            faceVideo.srcObject = stream;
+            faceVideo.play();
+            
+            isOverlayLoopActive = true;
+            requestAnimationFrame(tickFaceOverlay);
+        })
+        .catch(err => {
+            console.error('Error al acceder a la cámara:', err);
+            showToast('Error de Cámara', 'No pudimos acceder a tu cámara. Asegúrate de dar los permisos necesarios.', 'error');
+            closeFaceScanner();
+        });
+    }
+
+    function stopCamera() {
+        isOverlayLoopActive = false;
+        if (faceStream) {
+            faceStream.getTracks().forEach(track => track.stop());
+            faceStream = null;
+        }
+        faceVideo.srcObject = null;
+    }
+
+    function tickFaceOverlay() {
+        if (!isOverlayLoopActive) return;
+        
+        const width = faceOverlayCanvas.width = faceVideo.videoWidth || 640;
+        const height = faceOverlayCanvas.height = faceVideo.videoHeight || 480;
+        const ctx = faceOverlayCanvas.getContext('2d');
+        
+        ctx.clearRect(0, 0, width, height);
+        
+        ctx.fillStyle = 'rgba(179, 126, 129, 0.85)';
+        ctx.strokeStyle = 'rgba(179, 126, 129, 0.3)';
+        ctx.lineWidth = 1;
+        
+        const absolutePoints = facePoints.map(pt => {
+            const jitterX = (Math.random() - 0.5) * 2.5;
+            const jitterY = (Math.random() - 0.5) * 2.5;
+            return {
+                x: pt.x * width + jitterX,
+                y: pt.y * height + jitterY
+            };
+        });
+        
+        absolutePoints.forEach(pt => {
+            ctx.beginPath();
+            ctx.arc(pt.x, pt.y, 4, 0, 2 * Math.PI);
+            ctx.fill();
+            
+            ctx.beginPath();
+            ctx.arc(pt.x, pt.y, 8, 0, 2 * Math.PI);
+            ctx.fillStyle = 'rgba(179, 126, 129, 0.15)';
+            ctx.fill();
+            ctx.fillStyle = 'rgba(179, 126, 129, 0.85)';
+        });
+        
+        ctx.beginPath();
+        ctx.moveTo(absolutePoints[14].x, absolutePoints[14].y);
+        ctx.lineTo(absolutePoints[16].x, absolutePoints[16].y);
+        ctx.lineTo(absolutePoints[18].x, absolutePoints[18].y);
+        ctx.lineTo(absolutePoints[17].x, absolutePoints[17].y);
+        ctx.lineTo(absolutePoints[15].x, absolutePoints[15].y);
+        ctx.stroke();
+        
+        ctx.beginPath();
+        ctx.moveTo(absolutePoints[1].x, absolutePoints[1].y);
+        ctx.lineTo(absolutePoints[6].x, absolutePoints[6].y);
+        ctx.lineTo(absolutePoints[7].x, absolutePoints[7].y);
+        ctx.moveTo(absolutePoints[2].x, absolutePoints[2].y);
+        ctx.lineTo(absolutePoints[6].x, absolutePoints[6].y);
+        ctx.stroke();
+        
+        if (isOverlayLoopActive) {
+            requestAnimationFrame(tickFaceOverlay);
+        }
+    }
+
+    function captureFaceSnapshot() {
+        cameraFlash.classList.add('flash-active');
+        setTimeout(() => cameraFlash.classList.remove('flash-active'), 400);
+
+        const tempCanvas = document.createElement('canvas');
+        tempCanvas.width = faceVideo.videoWidth || 640;
+        tempCanvas.height = faceVideo.videoHeight || 480;
+        const tempCtx = tempCanvas.getContext('2d');
+        tempCtx.drawImage(faceVideo, 0, 0, tempCanvas.width, tempCanvas.height);
+        const dataURL = tempCanvas.toDataURL('image/jpeg');
+
+        stopCamera();
+
+        // Obtener usuario activo
+        const storedUser = localStorage.getItem('aura_active_user');
+        if (storedUser) {
+            const activeUser = JSON.parse(storedUser);
+            
+            // Actualizar en la base de datos de usuarios
+            const users = JSON.parse(localStorage.getItem('aetheria_users')) || [];
+            const userIdx = users.findIndex(u => u.email.toLowerCase() === activeUser.email.toLowerCase());
+            
+            if (userIdx !== -1) {
+                users[userIdx].faceImage = dataURL;
+                localStorage.setItem('aetheria_users', JSON.stringify(users));
+                
+                // Actualizar sesión activa
+                activeUser.faceImage = dataURL;
+                localStorage.setItem('aura_active_user', JSON.stringify(activeUser));
+                
+                showToast('Face ID Configurado', 'Tu rostro ha sido asociado a tu cuenta correctamente.', 'success');
+            } else {
+                showToast('Error', 'No se pudo asociar el rostro a tu perfil.', 'error');
+            }
+        }
+        
+        closeFaceScanner();
+    }
+
+    if (faceModalClose) faceModalClose.addEventListener('click', closeFaceScanner);
+    if (faceCaptureBtn) faceCaptureBtn.addEventListener('click', captureFaceSnapshot);
     
 });
