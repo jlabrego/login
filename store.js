@@ -1,3 +1,21 @@
+async function loadFaceModels() {
+   await Promise.all([
+    faceapi.nets.tinyFaceDetector.loadFromUri("./weights"),
+    faceapi.nets.faceLandmark68Net.loadFromUri("./weights"),
+    faceapi.nets.faceRecognitionNet.loadFromUri("./weights")
+]);
+
+    console.log("✅ Modelos cargados");
+}
+
+document.addEventListener("DOMContentLoaded", async () => {
+    try {
+        await loadFaceModels();
+        console.log("✅ Face API lista");
+    } catch (error) {
+        console.error("❌ Error cargando modelos:", error);
+    }
+});
 document.addEventListener('DOMContentLoaded', () => {
     // ==========================================================================
     // 1. CONTROL DE SESIÓN Y ACCESO

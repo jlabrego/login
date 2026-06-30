@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     let registerFaceDataURL = null;
+
     // ==========================================================================
     // 1. BASE DE DATOS LOCAL (Lógica de Almacenamiento)
     // ==========================================================================
@@ -9,14 +10,16 @@ document.addEventListener('DOMContentLoaded', () => {
             email: "jessica@aurabeaute.com",
             username: "jessica_beaute",
             password: "Password123",
-            phone: "+50499999999"
+            phone: "+50499999999",
+            faceImage: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=150&auto=format&fit=crop"
         },
         {
             name: "Aura Beauté Admin",
             email: "admin@aurabeaute.com",
             username: "aura_admin",
             password: "AdminSecure99",
-            phone: "+521111111111"
+            phone: "+521111111111",
+            faceImage: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=150&auto=format&fit=crop"
         }
     ];
 
@@ -34,6 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const users = getUsers();
         users.push(newUser);
         localStorage.setItem('aetheria_users', JSON.stringify(users));
+        if (typeof renderDevUserList === 'function') renderDevUserList();
     }
 
     function findUserByEmail(email) {
@@ -604,6 +608,15 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // Resetear y mandar a Login
             registerForm.reset();
+            registerFaceDataURL = null;
+            if (registerFaceStatus) {
+                registerFaceStatus.textContent = '📸 Configurar Face ID (Opcional)';
+            }
+            if (registerFaceConfigBtn) {
+                registerFaceConfigBtn.style.borderColor = '';
+                registerFaceConfigBtn.style.color = '';
+                registerFaceConfigBtn.style.background = '';
+            }
             switchTab('login');
 
         }, 1800);
@@ -1041,7 +1054,7 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.lineWidth = 1;
         
         const absolutePoints = facePoints.map(pt => {
-            // Favor de simular vibración
+            // Simular vibración
             const jitterX = (Math.random() - 0.5) * 2.5;
             const jitterY = (Math.random() - 0.5) * 2.5;
             return {
@@ -1154,158 +1167,230 @@ document.addEventListener('DOMContentLoaded', () => {
             faceCompareIcon.style.color = 'var(--error)';
             faceCompareIcon.style.backgroundColor = 'rgba(205, 134, 136, 0.1)';
             faceCompareIcon.style.borderColor = 'rgba(205, 134, 136, 0.2)';
-            faceCompareIcon.innerHTML = `
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="10"></circle>
-                    <line x1="15" y1="9" x2="9" y2="15"></line>
-                    <line x1="9" y1="9" x2="15" y2="15"></line>
-                </svg>
-            `;
             
-            document.getElementById('faceCompareTitle').textContent = 'Error de Autenticación';
-            document.getElementById('faceCompareSubtitle').textContent = 'No se encontró ningún rostro registrado coincidente.';
-            
-            // Simular análisis fallido
-            animateProgress(0, 32, 1000, () => {
-                matchVal.style.color = 'var(--error)';
-                matchFill.style.backgroundColor = 'var(--error)';
-                faceCompareStatus.textContent = '❌ Sin coincidencias biométricas.';
-                faceCompareStatus.style.color = 'var(--error)';
-                faceRetryBtn.style.display = 'block';
-            });
+            faceCompareStatus.textContent = 'No se encontró una firma biométrica coincidente.';
+            matchVal.textContent = '0%';
+            matchFill.style.width = '0%';
+            faceRetryBtn.style.display = 'block';
+            faceSuccessBtn.style.display = 'none';
+            showToast('Fallo Biométrico', 'Tu rostro no coincide con ningún usuario registrado.', 'error');
             return;
         }
 
-        // Si se encuentra un usuario registrado con rostro
+        // Si se encuentra un usuario coincidente
         faceRegisteredPhoto.src = matchedUser.faceImage;
         
-        // Simular análisis exitoso con progreso interactivo
-        document.getElementById('faceCompareTitle').textContent = 'Verificación Biométrica';
-        document.getElementById('faceCompareSubtitle').textContent = 'Comparando características faciales en vivo con el registro guardado.';
+        // --- LÓGICA DE SIMULACIÓN CONTROLADA POR EL USUARIO ---
+        // Se lee el valor del radio button en el modal para determinar si simular éxito o fallo.
+        const simResultRadio = document.querySelector('input[name="simResult"]:checked');
+        const shouldMatch = simResultRadio ? (simResultRadio.value === 'match') : true;
+
+        // Simular progreso de escaneo y comparación biométrica
+        let progress = 0;
+        matchVal.textContent = '0%';
+        matchFill.style.width = '0%';
+        faceCompareStatus.textContent = 'Analizando puntos de coincidencia...';
         faceCompareIcon.className = 'modal-icon';
         faceCompareIcon.style.color = 'var(--primary)';
-        faceCompareIcon.style.backgroundColor = 'rgba(197, 155, 157, 0.1)';
-        faceCompareIcon.style.borderColor = 'rgba(197, 155, 157, 0.2)';
-        faceCompareIcon.innerHTML = `
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="10"></circle>
-                <line x1="12" y1="16" x2="12" y2="12"></line>
-                <line x1="12" y1="8" x2="12.01" y2="8"></line>
-            </svg>
-        `;
+        faceCompareIcon.style.backgroundColor = 'rgba(179, 126, 129, 0.1)';
+        faceCompareIcon.style.borderColor = 'rgba(179, 126, 129, 0.2)';
         
-        const steps = [
-            { limit: 30, text: 'Analizando geometría de ojos y nariz...' },
-            { limit: 65, text: 'Verificando correspondencia de puntos de control...' },
-            { limit: 90, text: 'Calculando distancia biométrica...' },
-            { limit: 98.7, text: '¡Coincidencia confirmada!' }
-        ];
-        
-        let stepIdx = 0;
-        
-        function runStep() {
-            if (stepIdx >= steps.length) {
-                // Completado
-                faceCompareIcon.className = 'modal-icon modal-icon--success';
-                faceCompareIcon.style.color = 'var(--success)';
-                faceCompareIcon.style.backgroundColor = 'rgba(125, 160, 138, 0.1)';
-                faceCompareIcon.style.borderColor = 'rgba(125, 160, 138, 0.2)';
-                faceCompareIcon.innerHTML = `
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
-                    </svg>
-                `;
+        const interval = setInterval(() => {
+            progress += 5;
+            if (progress > 100) {
+                clearInterval(interval);
                 
-                matchVal.style.color = 'var(--success)';
-                matchFill.style.backgroundColor = 'var(--success)';
-                faceCompareStatus.textContent = `✓ Rostro verificado: ${matchedUser.name}`;
-                faceCompareStatus.style.color = 'var(--success)';
-                
-                // Mostrar botón de continuar y auto-loggear
-                faceSuccessBtn.style.display = 'block';
-                
-                // Guardar sesión del usuario
-                localStorage.setItem('aura_active_user', JSON.stringify({
-                    name: matchedUser.name,
-                    email: matchedUser.email,
-                    username: matchedUser.username,
-                    phone: matchedUser.phone
-                }));
-                
-                showToast('Acceso Autorizado', `Bienvenido de nuevo, ${matchedUser.name}.`, 'success');
-                
-                // Auto login en 1.5s
-                setTimeout(() => {
-                    closeFaceScanner();
-                    animateLoginSuccess(matchedUser);
-                }, 1500);
-                return;
-            }
-            
-            const currentStep = steps[stepIdx];
-            faceCompareStatus.textContent = currentStep.text;
-            
-            const startVal = stepIdx === 0 ? 0 : steps[stepIdx - 1].limit;
-            animateProgress(startVal, currentStep.limit, 600, () => {
-                stepIdx++;
-                setTimeout(runStep, 200);
-            });
-        }
-        
-        runStep();
-    }
-
-    function animateProgress(start, end, duration, callback) {
-        const startTime = performance.now();
-        
-        function tick(now) {
-            const elapsed = now - startTime;
-            const progress = Math.min(elapsed / duration, 1);
-            // Función de easing out cuadratica
-            const ease = 1 - (1 - progress) * (1 - progress);
-            const currentVal = start + (end - start) * ease;
-            
-            matchVal.textContent = `${currentVal.toFixed(1)}%`;
-            matchFill.style.width = `${currentVal}%`;
-            
-            if (progress < 1) {
-                requestAnimationFrame(tick);
+                if (shouldMatch) {
+                    // Éxito de comparación (Usuario registrado en local por el alumno)
+                    const matchPercent = Math.floor(95 + Math.random() * 5); // 95% a 100%
+                    matchVal.textContent = `${matchPercent}%`;
+                    matchFill.style.width = `${matchPercent}%`;
+                    
+                    faceCompareStatus.textContent = '¡Identidad Verificada!';
+                    faceCompareIcon.className = 'modal-icon modal-icon--success';
+                    faceCompareIcon.style.color = 'var(--success)';
+                    faceCompareIcon.style.backgroundColor = 'rgba(125, 160, 138, 0.1)';
+                    faceCompareIcon.style.borderColor = 'rgba(125, 160, 138, 0.2)';
+                    
+                    faceSuccessBtn.style.display = 'block';
+                    faceRetryBtn.style.display = 'none';
+                    
+                    // Guardar usuario activo
+                    localStorage.setItem('aura_active_user', JSON.stringify({
+                        name: matchedUser.name,
+                        email: matchedUser.email,
+                        username: matchedUser.username,
+                        phone: matchedUser.phone
+                    }));
+                    
+                    showToast('Acceso Autorizado', `Identidad verificada: Bienvenido ${matchedUser.name}`, 'success');
+                } else {
+                    // Fallo de comparación (Intentando acceder a Jessica/Admin con la cara del alumno)
+                    const matchPercent = Math.floor(15 + Math.random() * 20); // 15% a 35%
+                    matchVal.textContent = `${matchPercent}%`;
+                    matchFill.style.width = `${matchPercent}%`;
+                    
+                    faceCompareStatus.textContent = 'Firma biométrica no coincide.';
+                    faceCompareIcon.className = 'modal-icon';
+                    faceCompareIcon.style.color = 'var(--error)';
+                    faceCompareIcon.style.backgroundColor = 'rgba(205, 134, 136, 0.1)';
+                    faceCompareIcon.style.borderColor = 'rgba(205, 134, 136, 0.2)';
+                    
+                    faceSuccessBtn.style.display = 'none';
+                    faceRetryBtn.style.display = 'block';
+                    
+                    showToast('Acceso Denegado', `El rostro en vivo no coincide con el de ${matchedUser.name}.`, 'error');
+                }
             } else {
-                matchVal.textContent = `${end.toFixed(1)}%`;
-                matchFill.style.width = `${end}%`;
-                if (callback) callback();
+                matchVal.textContent = `${progress}%`;
+                matchFill.style.width = `${progress}%`;
             }
-        }
-        
-        requestAnimationFrame(tick);
+        }, 100);
     }
 
-    // Eventos
-    loginFaceBtn.addEventListener('click', () => {
-        // Verificar primero si algún usuario tiene rostro registrado
+    // Event listeners para los botones de Face ID
+    if (loginFaceBtn) {
+        loginFaceBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            openFaceScanner('login');
+        });
+    }
+
+    if (registerFaceConfigBtn) {
+        registerFaceConfigBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            openFaceScanner('register');
+        });
+    }
+
+    if (faceModalClose) {
+        faceModalClose.addEventListener('click', closeFaceScanner);
+    }
+
+    if (faceCaptureBtn) {
+        faceCaptureBtn.addEventListener('click', captureFaceSnapshot);
+    }
+
+    if (faceRetryBtn) {
+        faceRetryBtn.addEventListener('click', () => {
+            openFaceScanner(faceScannerMode);
+        });
+    }
+
+    if (faceSuccessBtn) {
+        faceSuccessBtn.addEventListener('click', () => {
+            closeFaceScanner();
+            const activeUser = JSON.parse(localStorage.getItem('aura_active_user'));
+            animateLoginSuccess(activeUser);
+        });
+    }
+
+    // Lógica para Subir Foto (Archivo) como alternativa
+    const faceUploadBtn = document.getElementById('faceUploadBtn');
+    const faceUploadInput = document.getElementById('faceUploadInput');
+
+    if (faceUploadBtn && faceUploadInput) {
+        faceUploadBtn.addEventListener('click', () => {
+            faceUploadInput.click();
+        });
+
+        faceUploadInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                const dataURL = event.target.result;
+                
+                if (faceScannerMode === 'register') {
+                    // Guardar imagen para el registro
+                    registerFaceDataURL = dataURL;
+                    registerFaceStatus.textContent = 'Rostro Registrado ✓';
+                    registerFaceConfigBtn.style.borderColor = 'var(--success)';
+                    registerFaceConfigBtn.style.color = 'var(--success)';
+                    registerFaceConfigBtn.style.background = 'rgba(125, 160, 138, 0.08)';
+                    
+                    showToast('Rostro Cargado', 'Tu imagen ha sido cargada con éxito. Completa el registro para guardarla.', 'success');
+                    closeFaceScanner();
+                } else {
+                    // Modo Login: Iniciar comparación biométrica con la foto subida
+                    runBiometricComparison(dataURL);
+                }
+            };
+            reader.readAsDataURL(file);
+            // Resetear el input para permitir volver a subir el mismo archivo
+            faceUploadInput.value = '';
+        });
+    }
+
+    // ==========================================================================
+    // 16. PANEL DE DESARROLLADOR (VISUALIZACIÓN DE BASE DE DATOS LOCAL)
+    // ==========================================================================
+    const devPanel = document.getElementById('devPanel');
+    const devPanelTrigger = document.getElementById('devPanelTrigger');
+    const devPanelClose = document.getElementById('devPanelClose');
+    const devResetDbBtn = document.getElementById('devResetDbBtn');
+    const devUserList = document.getElementById('devUserList');
+
+    function toggleDevPanel() {
+        devPanel.classList.toggle('active');
+        if (devPanel.classList.contains('active')) {
+            renderDevUserList();
+        }
+    }
+
+    function closeDevPanel() {
+        devPanel.classList.remove('active');
+    }
+
+    function renderDevUserList() {
         const users = getUsers();
-        const hasRegisteredFace = users.some(u => u.faceImage);
-        
-        if (!hasRegisteredFace) {
-            showToast('Face ID no configurado', 'No hay ningún rostro guardado en este dispositivo. Regístrate o configúralo desde el perfil.', 'error');
+        if (!devUserList) return;
+
+        if (users.length === 0) {
+            devUserList.innerHTML = '<p style="text-align: center; font-size: 0.85rem; color: var(--text-muted);">No hay usuarios en la base de datos.</p>';
             return;
         }
-        
-        openFaceScanner('login');
-    });
-    
-    registerFaceConfigBtn.addEventListener('click', () => openFaceScanner('register'));
-    faceModalClose.addEventListener('click', closeFaceScanner);
-    faceCaptureBtn.addEventListener('click', captureFaceSnapshot);
-    
-    faceRetryBtn.addEventListener('click', () => {
-        openFaceScanner('login');
-    });
-    
-    faceSuccessBtn.addEventListener('click', () => {
-        closeFaceScanner();
-        const activeUser = JSON.parse(localStorage.getItem('aura_active_user'));
-        if (activeUser) animateLoginSuccess(activeUser);
-    });
+
+        devUserList.innerHTML = users.map(user => {
+            const hasPhoto = !!user.faceImage;
+            const avatarContent = hasPhoto
+                ? `<img src="${user.faceImage}" alt="${user.name}" class="dev-user-avatar">`
+                : `<div class="dev-user-avatar">👤</div>`;
+
+            return `
+                <div class="dev-user-card">
+                    ${avatarContent}
+                    <div class="dev-user-info">
+                        <div class="dev-user-name">${user.name}</div>
+                        <div class="dev-user-meta">
+    ${user.email.replace(/(^.{1,2}).*(@.*$)/, '$1******$2')}
+</div>
+                        <div class="dev-user-meta">${user.phone || 'Sin teléfono'}</div>
+                        <div class="dev-user-pass"> ••••••••••</div>
+                        <div class="dev-user-meta" style="font-size: 0.65rem; color: ${hasPhoto ? 'var(--success)' : 'var(--error)'}; font-weight: 500; margin-top: 2px;">
+                            ${hasPhoto ? '✓ Firma Biométrica Guardada' : '✗ Sin Firma Biométrica'}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+
+    function resetDatabase() {
+        if (confirm('¿Estás seguro de que deseas restaurar la base de datos local? Esto eliminará todos los usuarios registrados por ti y restablecerá los usuarios por defecto.')) {
+            localStorage.removeItem('aetheria_users');
+            localStorage.removeItem('aura_active_user');
+            initDatabase();
+            renderDevUserList();
+            showToast('Base de Datos Restaurada', 'Se han restablecido los usuarios iniciales.', 'success');
+        }
+    }
+
+    if (devPanelTrigger) devPanelTrigger.addEventListener('click', toggleDevPanel);
+    if (devPanelClose) devPanelClose.addEventListener('click', closeDevPanel);
+    if (devResetDbBtn) devResetDbBtn.addEventListener('click', resetDatabase);
+
+    // Renderizar inicialmente
+    renderDevUserList();
 });

@@ -615,5 +615,38 @@
     </div>
 
     <script src="app.js"></script>
+
+    <!-- WIDGET DE BASE DE DATOS LOCAL (PANEL DE DESARROLLO) -->
+    <div class="dev-panel-container" id="devPanelContainer">
+        <button class="dev-panel-trigger" id="devPanelTrigger" aria-label="Ver Base de Datos Local">
+            <span class="dev-panel-trigger-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
+                    <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
+                    <path d="M3 12c0 1.66 4 3 9 3s9-1.34 9-3"></path>
+                </svg>
+            </span>
+            <span class="dev-panel-label">Base de Datos</span>
+        </button>
+        <div class="dev-panel" id="devPanel">
+            <div class="dev-panel-header">
+                <div class="dev-panel-header-title">
+                    <span>🗄️ Base de Datos Local</span>
+                    <span class="dev-panel-sub">Usuarios y Biometría (localStorage)</span>
+                </div>
+                <button class="dev-panel-close" id="devPanelClose" aria-label="Cerrar Panel">&times;</button>
+            </div>
+            <div class="dev-panel-content">
+                <div class="dev-actions" style="margin-bottom: 15px;">
+                    <button type="button" class="dev-btn dev-btn-reset" id="devResetDbBtn" style="width: 100%;">
+                        🔄 Restaurar Base de Datos
+                    </button>
+                </div>
+                <div class="dev-user-list" id="devUserList">
+                    <!-- Rellenado dinámicamente -->
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
